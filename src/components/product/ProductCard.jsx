@@ -11,7 +11,7 @@ function ProductImage({ src, alt }) {
     setHasError(false)
   }, [src])
 
-  if (hasError) {
+  if (!src || hasError) {
     return (
       <div className="grid h-60 w-full place-items-center bg-brand-light text-brand">
         <svg className="h-16 w-16" viewBox="0 0 64 64" role="img" aria-label="Product image unavailable">
@@ -39,11 +39,12 @@ function ProductCard({ product }) {
   const selectedVariant = useMemo(() => getCheapestActiveInStockVariant(product), [product])
   const lowestPrice = selectedVariant?.price || product.startingPrice || Math.min(...(product.variants || []).map((variant) => variant.price))
   const hasStock = product.inStock && product.variants?.some((variant) => variant.stock > 0)
+  const productImage = getPrimaryProductImage(product)
 
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
       <Link to={`/products/${product.slug}`} className="block overflow-hidden bg-brand-light">
-        <ProductImage src={getPrimaryProductImage(product)} alt={getPrimaryProductImageAlt(product)} />
+        <ProductImage src={productImage} alt={getPrimaryProductImageAlt(product)} />
       </Link>
       <div className="flex flex-1 flex-col p-5">
         <div className="mb-3 flex flex-wrap items-center justify-between gap-3">

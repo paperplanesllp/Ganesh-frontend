@@ -118,14 +118,29 @@ export function getCurrentProducts() {
 
   return storedProducts.map((product) => {
     const seedProduct = seedProductsById.get(getProductId(product))
-    const usesLegacyPlaceholder = !product.image || product.image === LEGACY_PLACEHOLDER_IMAGE
+    let correctedProduct =
+      product.slug === 'vathakuzhambu-mix' && product.category === 'Powders'
+        ? { ...product, category: 'Pickles' }
+        : product
+
+    if (correctedProduct.slug === 'idly-powder' && correctedProduct.image === '/images/idily.png') {
+      correctedProduct = {
+        ...correctedProduct,
+        image: '/images/id.png',
+        images: ['/images/id.png'],
+        media: (correctedProduct.media || []).map((item) =>
+          item.url === '/images/idily.png' ? { ...item, url: '/images/id.png' } : item,
+        ),
+      }
+    }
+    const usesLegacyPlaceholder = !correctedProduct.image || correctedProduct.image === LEGACY_PLACEHOLDER_IMAGE
 
     if (!seedProduct || !usesLegacyPlaceholder || seedProduct.image === LEGACY_PLACEHOLDER_IMAGE) {
-      return product
+      return correctedProduct
     }
 
     return {
-      ...product,
+      ...correctedProduct,
       image: seedProduct.image,
       images: seedProduct.images,
     }

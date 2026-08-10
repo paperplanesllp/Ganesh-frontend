@@ -10,7 +10,7 @@ const CATEGORY_CONTENT = {
   Pickles: {
     heading: 'PICKLES',
     eyebrow: 'Traditional favourites',
-    description: 'Explore our 17 traditional pickles, prepared with carefully selected ingredients and time-honoured recipes.',
+    description: 'Explore our 18 traditional pickles, prepared with carefully selected ingredients and time-honoured recipes.',
     emptyTitle: 'No pickles available',
   },
   Powders: {

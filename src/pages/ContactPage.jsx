@@ -588,7 +588,7 @@ function ContactPage() {
               Contact Ganesh Pickles
             </p>
 
-            <h1 className="mt-4 font-['Arial_Black',sans-serif] text-[clamp(2.5rem,12vw,3.75rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] text-[#88ad24] lg:text-10xl">
+            <h1 className="mt-4 font-['Arial_Black',sans-serif] text-[clamp(2.5rem,12vw,3.75rem)] font-black uppercase leading-[0.92] tracking-[-0.04em] text-[#BC2222] lg:text-10xl">
               Let&apos;s talk
               <span className="block">pickles!</span>
             </h1>

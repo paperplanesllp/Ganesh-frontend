@@ -84,6 +84,7 @@ function ProductDetailsPage() {
     if (!product) return []
     return getProductGalleryImages(product)
   }, [product])
+  const hasProductImage = productImages.length > 0
 
   if (!product) {
     return (
@@ -154,11 +155,17 @@ function ProductDetailsPage() {
           <div className="mt-6 grid gap-10 lg:grid-cols-2">
             <div>
               <div className="overflow-hidden rounded-2xl border border-gray-200 bg-brand-light">
-                <img
-                  src={resolveProductImage(selectedImage || getPrimaryProductImage(product))}
-                  alt={product.name}
-                  className="aspect-square h-full w-full object-cover sm:h-[420px] lg:h-[520px]"
-                />
+                {hasProductImage ? (
+                  <img
+                    src={resolveProductImage(selectedImage || getPrimaryProductImage(product))}
+                    alt={product.name}
+                    className="aspect-square h-full w-full object-cover sm:h-[420px] lg:h-[520px]"
+                  />
+                ) : (
+                  <div className="flex aspect-square items-center justify-center px-6 text-center text-sm font-semibold text-gray-500 sm:h-[420px] lg:h-[520px]">
+                    Product image coming soon
+                  </div>
+                )}
               </div>
               {productImages.length > 1 && (
                 <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
@@ -212,6 +219,7 @@ function ProductDetailsPage() {
                     variants={product.variants}
                     selectedVariant={selectedVariant}
                     onChange={handleVariantChange}
+                    showBottleOptions={product.category === 'Pickles'}
                   />
                 </div>
                 <div>

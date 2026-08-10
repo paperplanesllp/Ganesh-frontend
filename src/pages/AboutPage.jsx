@@ -77,7 +77,7 @@ function AboutPage() {
               From Palakkad
             </p>
 
-            <h1 className="mt-4 font-['Arial_Black',sans-serif] text-[clamp(2.75rem,8vw,6rem)] font-black uppercase leading-[0.9] tracking-[-0.05em] text-[#88ad24]">
+            <h1 className="mt-4 font-['Arial_Black',sans-serif] text-[clamp(2.75rem,8vw,6rem)] font-black uppercase leading-[0.9] tracking-[-0.05em] text-[#BC2222]">
               Ganesh
               <span className="block">Pickles!</span>
             </h1>
@@ -89,7 +89,7 @@ function AboutPage() {
             </p>
 
             <div className="mt-8">
-              <h2 className="text-lg font-black uppercase tracking-[0.12em] text-[#789719]">
+              <h2 className="text-lg font-black uppercase tracking-[0.12em] text-[#BC2222]">
               WHY FAMILIES TRUST GANESH
               </h2>
 
@@ -112,7 +112,7 @@ function AboutPage() {
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
                 to="/products"
-                className="group inline-flex items-center gap-2 rounded-full bg-[#88ad24] px-7 py-3.5 text-sm font-bold text-white shadow-[0_12px_30px_rgba(113,143,26,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#718f1a] hover:shadow-[0_16px_35px_rgba(113,143,26,0.3)] focus:outline-none focus:ring-2 focus:ring-[#88ad24] focus:ring-offset-2"
+                className="group inline-flex items-center gap-2 rounded-full bg-[#BC2222] px-7 py-3.5 text-sm font-bold text-white shadow-[0_12px_30px_rgba(188,34,34,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#991B1B] hover:shadow-[0_16px_35px_rgba(188,34,34,0.3)] focus:outline-none focus:ring-2 focus:ring-[#BC2222] focus:ring-offset-2"
               >
                 Explore Our Products
 
@@ -215,7 +215,7 @@ function AboutPage() {
       <section className="bg-[#f4f7e9] py-14">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
           <div className="mb-9 max-w-2xl">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#7d9b20]">
+            <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#BC2222]">
               WHAT WE VALUE
             </p>
 

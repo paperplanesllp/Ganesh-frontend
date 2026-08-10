@@ -28,7 +28,7 @@ function VariantButtons({ variants, selectedVariant, onChange }) {
   )
 }
 
-function WeightSelector({ variants, selectedVariant, onChange }) {
+function WeightSelector({ variants, selectedVariant, onChange, showBottleOptions = false }) {
   const pouchVariants = variants.filter((variant) => variant.packageType !== 'bottle')
   const bottleVariants = variants.filter((variant) => variant.packageType === 'bottle')
   const bottleSizes = [300, 500]
@@ -38,10 +38,11 @@ function WeightSelector({ variants, selectedVariant, onChange }) {
       {pouchVariants.length > 0 && (
         <VariantButtons variants={pouchVariants} selectedVariant={selectedVariant} onChange={onChange} />
       )}
-      <div>
-        <p className="mb-2 text-sm font-bold uppercase text-gray-600">Bottle</p>
-        <div className="flex flex-wrap gap-2">
-          {bottleSizes.map((grams) => {
+      {showBottleOptions && (
+        <div>
+          <p className="mb-2 text-sm font-bold uppercase text-gray-600">Bottle</p>
+          <div className="flex flex-wrap gap-2">
+            {bottleSizes.map((grams) => {
             const variant = bottleVariants.find((item) => Number(item.grams) === grams)
             const variantId = variant?._id || variant?.id
             const selectedVariantId = selectedVariant?._id || selectedVariant?.id
@@ -65,9 +66,10 @@ function WeightSelector({ variants, selectedVariant, onChange }) {
                 {grams} g
               </button>
             )
-          })}
+            })}
+          </div>
         </div>
-      </div>
+      )}
       {selectedVariant && (
         <p className="text-sm font-semibold text-gray-600">
           Selected pack: <span className="text-gray-900">{selectedVariant.label}</span>

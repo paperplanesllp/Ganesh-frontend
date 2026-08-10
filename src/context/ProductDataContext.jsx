@@ -11,6 +11,22 @@ import { getProducts } from '../services/productService'
 
 const ProductDataContext = createContext(null)
 
+function isVathakuzhambuMix(product) {
+  return product.slug === 'vathakuzhambu-mix' || product.name?.trim().toLowerCase() === 'vathakuzhambu mix'
+}
+
+function isIdlyPowder(product) {
+  return product.slug === 'idly-powder' || product.name?.trim().toLowerCase() === 'idly powder'
+}
+
+function isTenderMangoPickle(product) {
+  return product.slug === 'tender-mango-pickle' || product.name?.trim().toLowerCase() === 'tender mango pickle'
+}
+
+function isChillyPickle(product) {
+  return product.slug === 'chilly-pickle' || product.name?.trim().toLowerCase() === 'chilly pickle'
+}
+
 export function ProductDataProvider({ children }) {
   const [products, setProducts] = useState(() => getCurrentProducts())
 
@@ -60,13 +76,35 @@ export function ProductDataProvider({ children }) {
   }, [])
 
   const value = useMemo(
-    () => ({
-      products,
-      activeProducts: products.filter((product) => product.isActive !== false),
-      refreshProducts,
-      saveProducts,
-      resetProducts,
-    }),
+    () => {
+      const categorizedProducts = products.map((product) => {
+        if (isVathakuzhambuMix(product)) {
+          return { ...product, category: 'Pickles', spiceLevel: 'Hot' }
+        }
+
+        if (isIdlyPowder(product)) {
+          return { ...product, image: '/images/id.png', images: ['/images/id.png'], media: [] }
+        }
+
+        if (isTenderMangoPickle(product)) {
+          return { ...product, image: '/images/Tender mango.png', images: ['/images/Tender mango.png'], media: [] }
+        }
+
+        if (isChillyPickle(product)) {
+          return { ...product, image: '/images/Greenchilly.png', images: ['/images/Greenchilly.png'], media: [] }
+        }
+
+        return product
+      })
+
+      return {
+        products: categorizedProducts,
+        activeProducts: categorizedProducts.filter((product) => product.isActive !== false),
+        refreshProducts,
+        saveProducts,
+        resetProducts,
+      }
+    },
     [products, refreshProducts, resetProducts, saveProducts],
   )
 
