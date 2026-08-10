@@ -575,20 +575,11 @@ function ContactPage() {
     },
     {
       title: 'Call us',
-      value: '+91 94479 60265',
-      href: 'tel:+919447960265',
-      type: 'phone',
-    },
-    {
-      title: 'Call us',
-      value: '+91 98723 48112',
-      href: 'tel:+919872348112',
-      type: 'phone',
-    },
-    {
-      title: 'Call us',
-      value: '0491-2528207',
-      href: 'tel:+914912528207',
+      values: [
+        { label: '+91 94479 60265', href: 'tel:+919447960265' },
+        { label: '+91 98723 48112', href: 'tel:+919872348112' },
+        { label: '+91 491 252 8207', href: 'tel:+914912528207' },
+      ],
       type: 'phone',
     },
     {
@@ -680,8 +671,14 @@ function ContactPage() {
                         {detail.title}
                       </span>
 
-                      <span className="mt-1 block break-words text-sm font-semibold">
-                        {detail.value}
+                      <span className="mt-1 grid gap-1 break-words text-sm font-semibold">
+                        {detail.values
+                          ? detail.values.map((item) => (
+                              <a key={item.href} href={item.href} className="transition hover:text-[#c2da6a]">
+                                {item.label}
+                              </a>
+                            ))
+                          : detail.value}
                       </span>
                     </span>
                   </>
