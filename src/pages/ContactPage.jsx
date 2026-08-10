@@ -562,7 +562,7 @@ function ContactPage() {
     },
     {
       label: 'WhatsApp',
-      href: `https://wa.me/919876543210?text=${whatsappMessage}`,
+      href: `https://wa.me/919447960265?text=${whatsappMessage}`,
       icon: <WhatsAppIcon />,
     },
   ]
@@ -575,8 +575,20 @@ function ContactPage() {
     },
     {
       title: 'Call us',
-      value: '+91 98765 43210',
-      href: 'tel:+919876543210',
+      value: '+91 94479 60265',
+      href: 'tel:+919447960265',
+      type: 'phone',
+    },
+    {
+      title: 'Call us',
+      value: '+91 98723 48112',
+      href: 'tel:+919872348112',
+      type: 'phone',
+    },
+    {
+      title: 'Call us',
+      value: '0491-2528207',
+      href: 'tel:+914912528207',
       type: 'phone',
     },
     {
@@ -678,7 +690,7 @@ function ContactPage() {
                 if (detail.href) {
                   return (
                     <a
-                      key={detail.title}
+                      key={detail.href || detail.title}
                       href={detail.href}
                       className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4 transition duration-300 hover:-translate-y-0.5 hover:border-[#b8d15e]/40 hover:bg-white/[0.08]"
                     >
@@ -774,7 +786,7 @@ function ContactPage() {
                   value={values.phone}
                   onChange={handleChange}
                   autoComplete="tel"
-                  placeholder="+91 98765 43210"
+                  placeholder="+91 94479 60265"
                   aria-invalid={Boolean(errors.phone)}
                   required
                 />

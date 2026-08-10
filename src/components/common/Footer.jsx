@@ -37,10 +37,16 @@ function Footer() {
           <h2 className="text-sm font-bold uppercase tracking-wide text-black">Contact</h2>
           <address className="mt-4 grid gap-2 text-sm not-italic text-black">
             <span>Palakkad, Kerala</span>
-            <a className="transition duration-200 text-black hover:text-black" href="tel:+919876543210">
-              +91 000000000
+            <a className="transition duration-200 text-black hover:text-black" href="tel:+919447960265">
+              +91 94479 60265
             </a>
-            <a className="transition duration-200 text-black hover:text-black" href="mailto:orders@ganeshpickles.example">
+            <a className="transition duration-200 text-black hover:text-black" href="tel:+919872348112">
+              +91 98723 48112
+            </a>
+            <a className="transition duration-200 text-black hover:text-black" href="tel:+914912528207">
+              0491-2528207
+            </a>
+            <a className="transition duration-200 text-black hover:text-black" href="mailto:nuraniganeshpickles@yahoo.com">
              nuraniganeshpickles@yahoo.com
             </a>
           </address>
