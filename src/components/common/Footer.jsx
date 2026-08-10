@@ -43,8 +43,8 @@ function Footer() {
             <a className="transition duration-200 text-black hover:text-black" href="tel:+919872348112">
               +91 98723 48112
             </a>
-            <a className="transition duration-200 text-black hover:text-black" href="tel:+914912528207">
-              +91 491 252 8207
+            <a className="transition duration-200 text-black hover:text-black" href="tel:04912528207">
+              0491-2528207
             </a>
             <a className="transition duration-200 text-black hover:text-black" href="mailto:nuraniganeshpickles@yahoo.com">
              nuraniganeshpickles@yahoo.com

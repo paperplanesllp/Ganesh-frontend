@@ -578,7 +578,7 @@ function ContactPage() {
       values: [
         { label: '+91 94479 60265', href: 'tel:+919447960265' },
         { label: '+91 98723 48112', href: 'tel:+919872348112' },
-        { label: '+91 491 252 8207', href: 'tel:+914912528207' },
+        { label: '0491-2528207', href: 'tel:04912528207' },
       ],
       type: 'phone',
     },
