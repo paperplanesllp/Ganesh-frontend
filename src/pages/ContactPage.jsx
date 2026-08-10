@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import emailjs from '@emailjs/browser'
 import { validateContact } from '../utils/validation'
 
 const ganeshPickleImage = '/images/ganu.jpeg'
 
 const initialValues = {
-  fullName: '',
+  from_name: '',
   phone: '',
-  email: '',
+  from_email: '',
+  subject: '',
   message: '',
 }
 
@@ -463,9 +465,11 @@ function ProductImageDisplay() {
 }
 
 function ContactPage() {
+  const formRef = useRef(null)
   const [values, setValues] = useState(initialValues)
   const [errors, setErrors] = useState({})
   const [notice, setNotice] = useState('')
+  const [isSending, setIsSending] = useState(false)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -489,11 +493,17 @@ function ContactPage() {
     }
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
-    const nextErrors = validateContact(values)
+    if (isSending) return
 
+    const trimmedValues = Object.fromEntries(
+      Object.entries(values).map(([key, value]) => [key, value.trim()]),
+    )
+    const nextErrors = validateContact(trimmedValues)
+
+    setValues(trimmedValues)
     setErrors(nextErrors)
     setNotice('')
 
@@ -509,14 +519,33 @@ function ContactPage() {
       return
     }
 
-    setNotice(
-      'Your message is ready. Submission will be enabled after the backend API is connected.',
-    )
+    Object.entries(trimmedValues).forEach(([name, value]) => {
+      const field = formRef.current?.elements.namedItem(name)
+      if (field) field.value = value
+    })
+
+    setIsSending(true)
+
+    try {
+      await emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY },
+      )
+      setValues(initialValues)
+      setNotice("Message sent successfully! We'll get back to you soon.")
+    } catch (error) {
+      console.error('EmailJS contact form submission failed:', error)
+      setNotice('Unable to send your message. Please try again.')
+    } finally {
+      setIsSending(false)
+    }
   }
 
   const whatsappMessage = encodeURIComponent(
     `Hello Ganesh Pickles, my name is ${
-      values.fullName || 'your customer'
+      values.from_name || 'your customer'
     }. I would like to know more about your pickles.`,
   )
 
@@ -694,6 +723,7 @@ function ContactPage() {
 
           {/* Form */}
           <form
+            ref={formRef}
             onSubmit={handleSubmit}
             noValidate
             className="rounded-[32px] border border-[#e0e5d2] bg-white p-6 shadow-[0_24px_65px_rgba(65,72,38,0.08)] sm:p-8 lg:p-10"
@@ -716,19 +746,20 @@ function ContactPage() {
                 Full name
 
                 <input
-                  className={getFieldClass('fullName')}
-                  name="fullName"
+                  className={getFieldClass('from_name')}
+                  name="from_name"
                   type="text"
-                  value={values.fullName}
+                  value={values.from_name}
                   onChange={handleChange}
                   autoComplete="name"
                   placeholder="Enter your full name"
-                  aria-invalid={Boolean(errors.fullName)}
+                  aria-invalid={Boolean(errors.from_name)}
+                  required
                 />
 
-                {errors.fullName && (
+                {errors.from_name && (
                   <span className="text-xs font-semibold text-red-600">
-                    {errors.fullName}
+                    {errors.from_name}
                   </span>
                 )}
               </label>
@@ -745,6 +776,7 @@ function ContactPage() {
                   autoComplete="tel"
                   placeholder="+91 98765 43210"
                   aria-invalid={Boolean(errors.phone)}
+                  required
                 />
 
                 {errors.phone && (
@@ -758,19 +790,41 @@ function ContactPage() {
                 Email address
 
                 <input
-                  className={getFieldClass('email')}
-                  name="email"
+                  className={getFieldClass('from_email')}
+                  name="from_email"
                   type="email"
-                  value={values.email}
+                  value={values.from_email}
                   onChange={handleChange}
                   autoComplete="email"
                   placeholder="you@example.com"
-                  aria-invalid={Boolean(errors.email)}
+                  aria-invalid={Boolean(errors.from_email)}
+                  required
                 />
 
-                {errors.email && (
+                {errors.from_email && (
                   <span className="text-xs font-semibold text-red-600">
-                    {errors.email}
+                    {errors.from_email}
+                  </span>
+                )}
+              </label>
+
+              <label className="grid gap-2 text-sm font-bold md:col-span-2">
+                Subject
+
+                <input
+                  className={getFieldClass('subject')}
+                  name="subject"
+                  type="text"
+                  value={values.subject}
+                  onChange={handleChange}
+                  placeholder="How can we help?"
+                  aria-invalid={Boolean(errors.subject)}
+                  required
+                />
+
+                {errors.subject && (
+                  <span className="text-xs font-semibold text-red-600">
+                    {errors.subject}
                   </span>
                 )}
               </label>
@@ -787,6 +841,7 @@ function ContactPage() {
                   onChange={handleChange}
                   placeholder="Tell us how we can help..."
                   aria-invalid={Boolean(errors.message)}
+                  required
                 />
 
                 {errors.message && (
@@ -798,31 +853,36 @@ function ContactPage() {
             </div>
 
             {notice && (
-              <div className="mt-6 rounded-2xl border border-[#dbe5b7] bg-[#f3f7e5] p-4 text-sm font-semibold text-[#5c7118]">
+              <div aria-live="polite" className="mt-6 rounded-2xl border border-[#dbe5b7] bg-[#f3f7e5] p-4 text-sm font-semibold text-[#5c7118]">
                 {notice}
               </div>
             )}
 
             <button
               type="submit"
+              disabled={isSending}
               className="group mt-7 inline-flex w-full items-center justify-center gap-3 rounded-full bg-[#902411] px-7 py-3.5 text-sm font-bold text-white shadow-[0_12px_30px_rgba(113,143,26,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#718f1a] hover:shadow-[0_16px_35px_rgba(113,143,26,0.3)] focus:outline-none focus:ring-2 focus:ring-[#88ad24] focus:ring-offset-2 sm:w-auto"
             >
-              Send Message
+              {isSending ? 'Sending...' : (
+                <>
+                  Send Message
 
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                stroke="currentColor"
-                strokeWidth="2"
-                aria-hidden="true"
-              >
-                <path
-                  d="M5 12h14m-6-6 6 6-6 6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M5 12h14m-6-6 6 6-6 6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </>
+              )}
             </button>
           </form>
         </div>

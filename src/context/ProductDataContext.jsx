@@ -27,6 +27,42 @@ function isChillyPickle(product) {
   return product.slug === 'chilly-pickle' || product.name?.trim().toLowerCase() === 'chilly pickle'
 }
 
+function isThamaraVathal(product) {
+  return product.slug === 'thamara-vathal' || product.name?.trim().toLowerCase() === 'thamara vathal'
+}
+
+function isUnnithandu(product) {
+  return product.slug === 'unnithandu' || product.name?.trim().toLowerCase() === 'unnithandu'
+}
+
+function isVadukapullyRed(product) {
+  return product.slug === 'vadukapully-red' || product.name?.trim().toLowerCase() === 'vadukapully red'
+}
+
+function isCurdChilly(product) {
+  return product.slug === 'curd-chilly' || product.name?.trim().toLowerCase() === 'curd chilly'
+}
+
+function isKappaNarthangai(product) {
+  return product.slug === 'kappa-narthangai' || product.name?.trim().toLowerCase() === 'kappa narthangai'
+}
+
+function isKaruvadamRiceRed(product) {
+  return product.slug === 'karuvadam-rice-red' || product.name?.trim().toLowerCase() === 'karuvadam rice red'
+}
+
+function isKaruvadamRiceWhite(product) {
+  return product.slug === 'karuvadam-rice-white' || product.name?.trim().toLowerCase() === 'karuvadam rice white'
+}
+
+function isManathakkali(product) {
+  return product.slug === 'manathakkali' || product.name?.trim().toLowerCase() === 'manathakkali'
+}
+
+function isPulyinchi(product) {
+  return product.slug === 'pulyinchi' || product.name?.trim().toLowerCase() === 'pulyinchi'
+}
+
 export function ProductDataProvider({ children }) {
   const [products, setProducts] = useState(() => getCurrentProducts())
 
@@ -92,6 +128,42 @@ export function ProductDataProvider({ children }) {
 
         if (isChillyPickle(product)) {
           return { ...product, image: '/images/Greenchilly.png', images: ['/images/Greenchilly.png'], media: [] }
+        }
+
+        if (isThamaraVathal(product)) {
+          return { ...product, image: '/images/tamara vathal .png', images: ['/images/tamara vathal .png'], media: [] }
+        }
+
+        if (isUnnithandu(product)) {
+          return { ...product, image: '/images/Unnithandu.png', images: ['/images/Unnithandu.png'], media: [] }
+        }
+
+        if (isVadukapullyRed(product)) {
+          return { ...product, image: '/images/vadukapully red.png', images: ['/images/vadukapully red.png'], media: [] }
+        }
+
+        if (isCurdChilly(product)) {
+          return { ...product, image: '/images/curd chilli.png', images: ['/images/curd chilli.png'], media: [] }
+        }
+
+        if (isKappaNarthangai(product)) {
+          return { ...product, image: '/images/Kappa narthangai.png', images: ['/images/Kappa narthangai.png'], media: [] }
+        }
+
+        if (isKaruvadamRiceRed(product)) {
+          return { ...product, image: '/images/Karuvadam Rice Red.png', images: ['/images/Karuvadam Rice Red.png'], media: [] }
+        }
+
+        if (isKaruvadamRiceWhite(product)) {
+          return { ...product, image: '/images/Karuvadam Rice White.png', images: ['/images/Karuvadam Rice White.png'], media: [] }
+        }
+
+        if (isManathakkali(product)) {
+          return { ...product, image: '/images/manathakkali vathal.png', images: ['/images/manathakkali vathal.png'], media: [] }
+        }
+
+        if (isPulyinchi(product)) {
+          return { ...product, image: '/images/Pulyinchi (1).png', images: ['/images/Pulyinchi (1).png'], media: [] }
         }
 
         return product

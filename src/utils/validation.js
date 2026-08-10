@@ -24,9 +24,10 @@ export function validateCheckout(values) {
 export function validateContact(values) {
   const errors = {}
 
-  if (!isRequired(values.fullName)) errors.fullName = 'Full name is required.'
+  if (!isRequired(values.from_name)) errors.from_name = 'Full name is required.'
   if (!isIndianMobileNumber(values.phone)) errors.phone = 'Enter a valid Indian mobile number.'
-  if (!isEmailAddress(values.email)) errors.email = 'Enter a valid email address.'
+  if (!isEmailAddress(values.from_email)) errors.from_email = 'Enter a valid email address.'
+  if (!isRequired(values.subject)) errors.subject = 'Subject is required.'
   if (!isRequired(values.message)) errors.message = 'Message is required.'
 
   return errors
