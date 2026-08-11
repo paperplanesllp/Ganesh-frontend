@@ -5,10 +5,15 @@ import { validateContact } from '../utils/validation'
 const ganeshPickleImage = '/images/ganu.jpeg'
 
 const initialValues = {
-  from_name: '',
+  name: '',
   phone: '',
-  from_email: '',
+  email: '',
   subject: '',
+  message: '',
+}
+
+const initialStatus = {
+  type: '',
   message: '',
 }
 
@@ -468,7 +473,7 @@ function ContactPage() {
   const formRef = useRef(null)
   const [values, setValues] = useState(initialValues)
   const [errors, setErrors] = useState({})
-  const [notice, setNotice] = useState('')
+  const [status, setStatus] = useState(initialStatus)
   const [isSending, setIsSending] = useState(false)
 
   const handleChange = (event) => {
@@ -488,8 +493,8 @@ function ContactPage() {
       return nextErrors
     })
 
-    if (notice) {
-      setNotice('')
+    if (status.message) {
+      setStatus(initialStatus)
     }
   }
 
@@ -505,7 +510,7 @@ function ContactPage() {
 
     setValues(trimmedValues)
     setErrors(nextErrors)
-    setNotice('')
+    setStatus(initialStatus)
 
     if (Object.keys(nextErrors).length > 0) {
       const firstInvalid = Object.keys(nextErrors)[0]
@@ -527,17 +532,36 @@ function ContactPage() {
     setIsSending(true)
 
     try {
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+
+      if (!serviceId || !templateId || !publicKey) {
+        console.error('EmailJS configuration is incomplete. Check the required Vite environment variables.')
+        setStatus({
+          type: 'error',
+          message: 'Email service is temporarily unavailable.',
+        })
+        return
+      }
+
       await emailjs.sendForm(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        serviceId,
+        templateId,
         formRef.current,
-        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY },
+        { publicKey },
       )
       setValues(initialValues)
-      setNotice("Message sent successfully! We'll get back to you soon.")
+      setStatus({
+        type: 'success',
+        message: 'Your message has been sent successfully.',
+      })
     } catch (error) {
       console.error('EmailJS contact form submission failed:', error)
-      setNotice('Unable to send your message. Please try again.')
+      setStatus({
+        type: 'error',
+        message: 'Unable to send your message. Please try again.',
+      })
     } finally {
       setIsSending(false)
     }
@@ -545,7 +569,7 @@ function ContactPage() {
 
   const whatsappMessage = encodeURIComponent(
     `Hello Ganesh Pickles, my name is ${
-      values.from_name || 'your customer'
+      values.name || 'your customer'
     }. I would like to know more about your pickles.`,
   )
 
@@ -755,20 +779,20 @@ function ContactPage() {
                 Full name
 
                 <input
-                  className={getFieldClass('from_name')}
-                  name="from_name"
+                  className={getFieldClass('name')}
+                  name="name"
                   type="text"
-                  value={values.from_name}
+                  value={values.name}
                   onChange={handleChange}
                   autoComplete="name"
                   placeholder="Enter your full name"
-                  aria-invalid={Boolean(errors.from_name)}
+                  aria-invalid={Boolean(errors.name)}
                   required
                 />
 
-                {errors.from_name && (
+                {errors.name && (
                   <span className="text-xs font-semibold text-red-600">
-                    {errors.from_name}
+                    {errors.name}
                   </span>
                 )}
               </label>
@@ -799,20 +823,20 @@ function ContactPage() {
                 Email address
 
                 <input
-                  className={getFieldClass('from_email')}
-                  name="from_email"
+                  className={getFieldClass('email')}
+                  name="email"
                   type="email"
-                  value={values.from_email}
+                  value={values.email}
                   onChange={handleChange}
                   autoComplete="email"
                   placeholder="you@example.com"
-                  aria-invalid={Boolean(errors.from_email)}
+                  aria-invalid={Boolean(errors.email)}
                   required
                 />
 
-                {errors.from_email && (
+                {errors.email && (
                   <span className="text-xs font-semibold text-red-600">
-                    {errors.from_email}
+                    {errors.email}
                   </span>
                 )}
               </label>
@@ -861,9 +885,9 @@ function ContactPage() {
               </label>
             </div>
 
-            {notice && (
+            {status.message && (
               <div aria-live="polite" className="mt-6 rounded-2xl border border-[#dbe5b7] bg-[#f3f7e5] p-4 text-sm font-semibold text-[#5c7118]">
-                {notice}
+                {status.message}
               </div>
             )}
 
