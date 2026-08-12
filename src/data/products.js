@@ -1,8 +1,8 @@
 const catalogue = [
-  ['TM', 'Tender Mango pickle', 'Pickles', [100, 200, 300, 500]],
-  ['CM', 'Cut mango', 'Pickles', [100, 200, 500]],
-  ['LP', 'Lime pickle', 'Pickles', [100, 200, 500]],
-  ['VR', 'Vadukapully red', 'Pickles', [100, 200, 500]],
+  ['TM', 'Tender Mango Pickle', 'Pickles', [100, 200, 300, 500]],
+  ['CM', 'Cut Mango', 'Pickles', [100, 200, 300, 500]],
+  ['LP', 'Lime Pickle', 'Pickles', [100, 200, 300, 500]],
+  ['VR', 'Vadukapully Red', 'Pickles', [100, 200, 300, 500]],
   ['VW', 'Vadukapully white', 'Pickles', [100, 200, 500]],
   ['MV', 'Mixed vegetable', 'Pickles', [100, 200, 500]],
   ['GP', 'Garlic pickle', 'Pickles', [100, 200]],
@@ -38,10 +38,10 @@ const catalogue = [
 ]
 
 const productPrices = {
-  TM: { 100: 60, 200: 110, 300: 155, 500: 225 },
-  CM: { 100: 35, 200: 60, 500: 120 },
-  LP: { 100: 35, 200: 60, 500: 120 },
-  VR: { 100: 35, 200: 60, 500: 120 },
+  TM: { 100: 60, 200: 110, 300: 160, 500: 240 },
+  CM: { 100: 35, 200: 60, 300: 90, 500: 135 },
+  LP: { 100: 35, 200: 60, 300: 90, 500: 135 },
+  VR: { 100: 35, 200: 60, 300: 90, 500: 135 },
   VW: { 100: 40, 200: 70, 500: 145 },
   MV: { 100: 35, 200: 60, 500: 120 },
   GP: { 100: 48, 200: 83 },

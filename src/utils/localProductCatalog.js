@@ -1,7 +1,7 @@
 import { products as seedProducts } from '../data/products'
 
 // Versioned so browsers do not restore the removed demo catalog from local storage.
-export const ADMIN_MOCK_PRODUCTS_STORAGE_KEY = 'ganesh_pickles_admin_products_v3'
+export const ADMIN_MOCK_PRODUCTS_STORAGE_KEY = 'ganesh_pickles_admin_products_v4'
 export const PRODUCT_STORE_UPDATED_EVENT = 'ganesh-pickles-product-store-updated'
 
 const NOW_ISO = new Date().toISOString()
