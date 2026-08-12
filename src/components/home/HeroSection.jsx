@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom'
 
 function HeroSection() {
   return (
-    <section className="relative h-screen min-h-screen w-full overflow-hidden bg-[#4b090c]">
+    <section className="relative h-screen min-h-screen w-full max-w-full overflow-hidden bg-[#4b090c]">
       {/* The muted hero video loops continuously. */}
-      <div className="absolute inset-0 flex items-center justify-end overflow-hidden bg-[#4b090c]">
+      <div className="absolute inset-0 flex w-full max-w-full items-center justify-end overflow-hidden bg-[#4b090c]">
         <video
-          className="absolute right-0 top-1/2 h-full w-auto max-w-none -translate-y-1/2 object-contain"
+          className="absolute inset-0 h-full w-full max-w-full object-cover md:inset-auto md:right-0 md:top-1/2 md:w-auto md:max-w-none md:-translate-y-1/2 md:object-contain"
           autoPlay
           loop
           muted
@@ -24,16 +24,16 @@ function HeroSection() {
       />
 
       {/* Hero content */}
-      <div className="relative z-10 mx-auto flex h-full min-h-screen max-w-[1320px] items-center py-10 sm:py-14 lg:py-16">
-        <div className="max-w-2xl">
+      <div className="relative z-10 mx-auto flex h-full min-h-screen w-full max-w-[1320px] items-center px-4 py-10 md:px-0 sm:py-14 lg:py-16">
+        <div className="w-full min-w-0 max-w-2xl">
           <h1
-            className="whitespace-nowrap font-[Georgia,serif] text-[clamp(2rem,2.4vw,2.5rem)] font-bold leading-[1.1] text-white [text-shadow:0_3px_12px_rgba(0,0,0,0.95),0_1px_3px_rgba(0,0,0,1)]"
+            className="max-w-full whitespace-normal font-[Georgia,serif] text-[clamp(2rem,2.4vw,2.5rem)] font-bold leading-[1.1] text-white [text-shadow:0_3px_12px_rgba(0,0,0,0.95),0_1px_3px_rgba(0,0,0,1)] md:whitespace-nowrap"
           >
             Spicing Up Tradition in Every Jar
           </h1>
 
           <div
-            className="mt-4 max-w-xl text-xs font-medium leading-5 text-white [text-shadow:0_2px_7px_rgba(0,0,0,1),0_1px_2px_rgba(0,0,0,1)] sm:mt-5 sm:text-sm sm:leading-6 lg:text-base lg:leading-7"
+            className="mt-4 w-full max-w-xl text-xs font-medium leading-5 text-white [text-shadow:0_2px_7px_rgba(0,0,0,1),0_1px_2px_rgba(0,0,0,1)] sm:mt-5 sm:text-sm sm:leading-6 lg:text-base lg:leading-7"
           >
             <p>
               For over 20 years, Ganesh has been bringing the authentic flavors of Palakkad to homes with a carefully crafted range of traditional pickles, vathals, and spice powders. Rooted in heritage and inspired by time-honored recipes, every product is made to capture the rich taste and aroma of Kerala's culinary traditions.
