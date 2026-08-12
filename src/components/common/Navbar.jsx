@@ -158,7 +158,7 @@ function Navbar() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-1 md:flex" aria-label="Primary navigation">
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
@@ -171,7 +171,7 @@ function Navbar() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <div className="hidden items-center gap-2 lg:flex">
+          <div className="hidden items-center gap-2 md:flex">
             <div className="relative" ref={accountMenuRef}>
               <button
                 type="button"
@@ -294,7 +294,7 @@ function Navbar() {
 
           <button
             type="button"
-            className="grid h-11 w-11 place-items-center rounded-full border border-gray-200 text-sm font-semibold text-brand transition duration-200 hover:bg-brand-light focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-full border border-gray-200 text-sm font-semibold text-brand transition duration-200 hover:bg-brand-light focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 md:hidden"
             aria-expanded={isOpen}
             aria-controls="mobile-navigation"
             aria-label="Open menu"
@@ -308,7 +308,7 @@ function Navbar() {
       {isOpen && (
         <nav
           id="mobile-navigation"
-          className="mx-auto grid max-w-[1280px] gap-2 px-4 pb-4 sm:px-6 lg:hidden"
+          className="mx-auto grid max-w-[1280px] gap-2 px-4 pb-4 sm:px-6 md:hidden"
           aria-label="Mobile navigation"
         >
           {navLinks.map((link) => (

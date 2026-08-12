@@ -66,7 +66,7 @@ function AboutPage() {
         <div className="pointer-events-none absolute -right-10 top-20 h-36 w-36 rounded-full border-[8px] border-[#a8c854]/30" />
         <div className="pointer-events-none absolute right-4 top-28 h-20 w-20 rounded-full border-[6px] border-[#a8c854]/30" />
 
-        <div className="relative mx-auto grid max-w-[1280px] items-center gap-12 px-4 py-12 sm:px-6 sm:py-16 lg:min-h-[680px] lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
+        <div className="relative mx-auto grid min-h-[680px] max-w-[1280px] items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
           {/* Content */}
           <div className="relative z-10 max-w-2xl">
             <p className="font-['Segoe_Print',cursive] text-xl font-bold tracking-wide text-[#332d18] sm:text-2xl">

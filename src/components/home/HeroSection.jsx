@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom'
 
 function HeroSection() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#4b090c] lg:min-h-[calc(100svh-5rem)]">
+    <section className="home-hero relative min-h-[calc(100svh-4rem)] w-full overflow-hidden bg-[#4b090c] sm:min-h-[calc(100svh-5rem)]">
       {/* The muted hero video loops continuously. */}
-      <div className="absolute inset-0 overflow-hidden bg-[#4b090c]">
+      <div className="home-hero-media absolute inset-0 overflow-hidden bg-[#4b090c]">
         <video
-          className="absolute inset-0 h-full w-full object-cover object-center sm:object-right"
+          className="home-hero-video absolute inset-0 h-full w-full object-cover object-center sm:object-right"
           autoPlay
           loop
           muted
@@ -24,16 +24,16 @@ function HeroSection() {
       />
 
       {/* Hero content */}
-      <div className="relative z-10 mx-auto flex max-w-[1320px] items-center px-4 py-10 sm:px-6 sm:py-14 lg:min-h-[calc(100svh-5rem)] lg:px-8 lg:py-16">
-        <div className="w-full min-w-0 max-w-2xl">
+      <div className="home-hero-content relative z-10 mx-auto flex min-h-[calc(100svh-4rem)] max-w-[1320px] items-center px-4 py-10 sm:min-h-[calc(100svh-5rem)] sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+        <div className="home-hero-copy w-full max-w-2xl">
           <h1
-            className="font-[Georgia,serif] text-3xl font-bold leading-tight text-white [text-shadow:0_3px_12px_rgba(0,0,0,0.95),0_1px_3px_rgba(0,0,0,1)] min-[420px]:text-4xl lg:text-[2.5rem]"
+            className="home-hero-title font-[Georgia,serif] text-3xl font-bold leading-tight text-white [text-shadow:0_3px_12px_rgba(0,0,0,0.95),0_1px_3px_rgba(0,0,0,1)] min-[420px]:text-4xl sm:text-[clamp(2rem,4vw,2.5rem)]"
           >
             Spicing Up Tradition in Every Jar
           </h1>
 
           <div
-            className="mt-4 max-w-xl text-sm font-medium leading-6 text-white [text-shadow:0_2px_7px_rgba(0,0,0,1),0_1px_2px_rgba(0,0,0,1)] sm:mt-5 lg:text-base lg:leading-7"
+            className="home-hero-description mt-4 max-w-xl text-xs font-medium leading-5 text-white [text-shadow:0_2px_7px_rgba(0,0,0,1),0_1px_2px_rgba(0,0,0,1)] sm:mt-5 sm:text-sm sm:leading-6 lg:text-base lg:leading-7"
           >
             <p>
               For over 20 years, Ganesh has been bringing the authentic flavors of Palakkad to homes with a carefully crafted range of traditional pickles, vathals, and spice powders. Rooted in heritage and inspired by time-honored recipes, every product is made to capture the rich taste and aroma of Kerala's culinary traditions.
@@ -44,7 +44,7 @@ function HeroSection() {
           </div>
 
           <div
-            className="mt-6 grid gap-3 sm:mt-8 sm:flex sm:flex-wrap"
+            className="home-hero-actions mt-6 grid gap-3 sm:mt-8 sm:flex sm:flex-wrap"
           >
             <Link
               to="/products"
