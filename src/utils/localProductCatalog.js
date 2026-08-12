@@ -125,6 +125,17 @@ export function getCurrentProducts() {
         ? { ...product, category: 'Pickles' }
         : product
 
+    if (correctedProduct.slug === 'curd-chilly') {
+      correctedProduct = {
+        ...correctedProduct,
+        variants: correctedProduct.variants.map((variant) =>
+          Number(variant.grams) === 100 && Number(variant.price) === 1
+            ? { ...variant, price: 65 }
+            : variant,
+        ),
+      }
+    }
+
     if (correctedProduct.slug === 'idly-powder' && correctedProduct.image === '/images/idily.png') {
       correctedProduct = {
         ...correctedProduct,
