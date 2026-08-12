@@ -808,15 +808,7 @@ function ContactPage() {
                   onChange={handleChange}
                   autoComplete="tel"
                   placeholder="+91 94479 60265"
-                  aria-invalid={Boolean(errors.phone)}
-                  required
                 />
-
-                {errors.phone && (
-                  <span className="text-xs font-semibold text-red-600">
-                    {errors.phone}
-                  </span>
-                )}
               </label>
 
               <label className="grid gap-2 text-sm font-bold md:col-span-2">

@@ -29,45 +29,30 @@ function VariantButtons({ variants, selectedVariant, onChange }) {
 }
 
 function WeightSelector({ variants, selectedVariant, onChange, showBottleOptions = false }) {
-  const pouchVariants = variants.filter((variant) => variant.packageType !== 'bottle')
-  const bottleVariants = variants.filter((variant) => variant.packageType === 'bottle')
   const bottleSizes = [300, 500]
+  const isBottleVariant = (variant) =>
+    variant.packageType === 'bottle' || (showBottleOptions && bottleSizes.includes(Number(variant.grams)))
+  const pouchVariants = variants.filter((variant) => !isBottleVariant(variant))
+  const bottleVariants = variants
+    .filter(isBottleVariant)
+    .map((variant) => ({
+      ...variant,
+      packageType: 'bottle',
+      label: `Bottle ${variant.grams} g`,
+    }))
 
   return (
     <div className="grid gap-4">
       {pouchVariants.length > 0 && (
-        <VariantButtons variants={pouchVariants} selectedVariant={selectedVariant} onChange={onChange} />
+        <div>
+          {showBottleOptions && <p className="mb-2 text-sm font-bold uppercase text-gray-600">Pouch</p>}
+          <VariantButtons variants={pouchVariants} selectedVariant={selectedVariant} onChange={onChange} />
+        </div>
       )}
-      {showBottleOptions && (
+      {showBottleOptions && bottleVariants.length > 0 && (
         <div>
           <p className="mb-2 text-sm font-bold uppercase text-gray-600">Bottle</p>
-          <div className="flex flex-wrap gap-2">
-            {bottleSizes.map((grams) => {
-            const variant = bottleVariants.find((item) => Number(item.grams) === grams)
-            const variantId = variant?._id || variant?.id
-            const selectedVariantId = selectedVariant?._id || selectedVariant?.id
-            const isSelected = Boolean(variant && selectedVariantId === variantId)
-            const isDisabled = !variant || variant.stock < 1
-
-            return (
-              <button
-                key={grams}
-                type="button"
-                className={`rounded-full border px-4 py-2 text-sm font-semibold transition duration-200 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 disabled:cursor-default disabled:bg-white disabled:text-brand disabled:hover:bg-white ${
-                  isSelected
-                    ? 'border-brand bg-brand text-white'
-                    : 'border-gray-200 bg-white text-brand hover:bg-brand-light'
-                }`}
-                onClick={() => variant && onChange(variant)}
-                disabled={isDisabled}
-                aria-pressed={isSelected}
-                title={!variant ? `Add the Bottle ${grams} g variant in Admin to enable this option` : undefined}
-              >
-                {grams} g
-              </button>
-            )
-            })}
-          </div>
+          <VariantButtons variants={bottleVariants} selectedVariant={selectedVariant} onChange={onChange} />
         </div>
       )}
       {selectedVariant && (

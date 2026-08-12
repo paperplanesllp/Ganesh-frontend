@@ -41,10 +41,12 @@ export function normalizeProduct(product) {
   const productId = getProductId(product) || product.slug
   const variants = (product?.variants || []).map((variant, index) => {
     const variantId = getVariantId(variant) || `${productId || 'product'}-variant-${index + 1}`
+    const isLegacyBottle = product.category === 'Pickles' && [300, 500].includes(Number(variant.grams))
     return {
       ...variant,
       id: variant.id || variantId,
       _id: variant._id || variantId,
+      packageType: variant.packageType || (isLegacyBottle ? 'bottle' : 'pouch'),
       isActive: variant.isActive !== false,
       price: Number(variant.price) || 0,
       originalPrice: variant.originalPrice === undefined || variant.originalPrice === null ? undefined : Number(variant.originalPrice),

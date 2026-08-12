@@ -109,7 +109,7 @@ function ProductDetailsPage() {
 
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant)
-    setSelectedImage(variant.image || getPrimaryProductImage(product))
+    setSelectedImage(variant.packageType === 'bottle' ? getPrimaryProductImage(product) : variant.image || getPrimaryProductImage(product))
     setQuantity((currentQuantity) => Math.min(currentQuantity, Math.max(1, variant.stock)))
   }
 
@@ -214,7 +214,7 @@ function ProductDetailsPage() {
 
               <div className="mt-7 grid gap-4">
                 <div>
-                  <p className="mb-2 text-sm font-bold uppercase text-gray-600">Weight</p>
+                  <p className="mb-2 text-sm font-bold uppercase text-gray-600">Pack size</p>
                   <WeightSelector
                     variants={product.variants}
                     selectedVariant={selectedVariant}

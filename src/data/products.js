@@ -187,11 +187,12 @@ export const products = catalogue.map(([code, name, category, weights], index) =
     reviewCount: 0,
     variants: weights.map((grams) => ({
       id: `${slug}-${grams}`,
-      label: `${grams} g`,
+      label: `${category === 'Pickles' && (grams === 300 || grams === 500) ? 'Bottle ' : ''}${grams} g`,
       grams,
       price: productPrices[code]?.[grams] ?? 1,
       stock: 100,
       sku: `GP-${code}-${grams}`,
+      packageType: category === 'Pickles' && (grams === 300 || grams === 500) ? 'bottle' : 'pouch',
       isActive: true,
     })),
   }

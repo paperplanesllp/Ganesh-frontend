@@ -25,7 +25,6 @@ export function validateContact(values) {
   const errors = {}
 
   if (!isRequired(values.name)) errors.name = 'Full name is required.'
-  if (!isIndianMobileNumber(values.phone)) errors.phone = 'Enter a valid Indian mobile number.'
   if (!isEmailAddress(values.email)) errors.email = 'Enter a valid email address.'
   if (!isRequired(values.subject)) errors.subject = 'Subject is required.'
   if (!isRequired(values.message)) errors.message = 'Message is required.'
