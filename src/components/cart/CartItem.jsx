@@ -13,12 +13,12 @@ function CartItem({ item }) {
       <Link to={`/products/${item.slug}`} className="overflow-hidden rounded-xl bg-brand-light">
         <img src={resolveProductImage(item.image)} alt={item.name} loading="lazy" className="h-28 w-full object-cover sm:h-full" />
       </Link>
-      <div>
+      <div className="min-w-0">
         <Link
           to={`/products/${item.slug}`}
           className="rounded-md focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
         >
-          <h2 className="font-[Georgia,serif] text-xl font-bold text-brand-dark">{item.name}</h2>
+          <h2 className="break-words font-[Georgia,serif] text-xl font-bold leading-snug text-brand-dark">{item.name}</h2>
         </Link>
         <p className="mt-1 text-sm font-semibold text-gray-600">Selected weight: {item.variantLabel}</p>
         <p className="mt-3 text-sm text-gray-600">Unit price: {formatCurrency(item.price)}</p>
@@ -30,7 +30,7 @@ function CartItem({ item }) {
           Remove
         </button>
       </div>
-      <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-end">
+      <div className="flex flex-wrap items-center justify-between gap-4 sm:flex-col sm:flex-nowrap sm:items-end">
         <QuantitySelector
           compact
           value={item.quantity}

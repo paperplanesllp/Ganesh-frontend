@@ -3,7 +3,7 @@ function ProductDetailsSkeleton() {
     <section className="bg-white py-12">
       <div className="mx-auto grid max-w-[1280px] gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
         <div>
-          <div className="h-[520px] animate-pulse rounded-2xl bg-brand-light" />
+          <div className="aspect-square animate-pulse rounded-2xl bg-brand-light sm:h-[420px] sm:aspect-auto lg:h-[520px]" />
           <div className="mt-4 flex gap-3">
             {[0, 1, 2].map((item) => (
               <div key={item} className="h-20 w-20 animate-pulse rounded-xl bg-brand-light" />

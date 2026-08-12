@@ -152,14 +152,14 @@ function ProductDetailsPage() {
           <Link to="/products" className="text-sm font-bold text-brand transition duration-200 hover:text-brand-dark">
             Back to products
           </Link>
-          <div className="mt-6 grid gap-10 lg:grid-cols-2">
+          <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-10">
             <div>
               <div className="overflow-hidden rounded-2xl border border-gray-200 bg-brand-light">
                 {hasProductImage ? (
                   <img
                     src={resolveProductImage(selectedImage || getPrimaryProductImage(product))}
                     alt={product.name}
-                    className="aspect-square h-full w-full object-cover sm:h-[420px] lg:h-[520px]"
+                    className="aspect-square w-full object-contain p-4 sm:h-[420px] lg:h-[520px]"
                   />
                 ) : (
                   <div className="flex aspect-square items-center justify-center px-6 text-center text-sm font-semibold text-gray-500 sm:h-[420px] lg:h-[520px]">
@@ -202,7 +202,7 @@ function ProductDetailsPage() {
                 </span>
               </div>
 
-              <h1 className="mt-4 font-[Georgia,serif] text-3xl font-bold text-brand-dark sm:text-4xl md:text-5xl">
+              <h1 className="mt-4 break-words font-[Georgia,serif] text-3xl font-bold leading-tight text-brand-dark sm:text-4xl md:text-5xl">
                 {product.name}
               </h1>
               {Number(product.reviewCount) > 0 && (
