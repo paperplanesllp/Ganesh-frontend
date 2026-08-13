@@ -62,7 +62,7 @@ export async function authenticatedApiRequest(endpoint, options = {}, auth = {})
   try {
     return await requestWithToken(accessToken)
   } catch (error) {
-    if (error?.status !== 401 || !refreshSession || shouldSkipRefresh || options._retry || !accessToken) throw error
+    if (error?.status !== 401 || !refreshSession || shouldSkipRefresh || options._retry || options.skipAuthRetry || !accessToken) throw error
 
     const nextToken = await refreshSession({ showExpiredMessage: true })
     if (!nextToken) {

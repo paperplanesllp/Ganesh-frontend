@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { USE_MOCK_DATA } from '../../config/appConfig'
 import { useAuth } from '../../context/AuthContext'
@@ -43,6 +43,7 @@ function CheckoutForm({ onDeliveryStateChange }) {
   const [paymentStatus, setPaymentStatus] = useState('idle')
   const [isPhonePeAvailable, setIsPhonePeAvailable] = useState(false)
   const [touchedFields, setTouchedFields] = useState({})
+  const paymentInFlightRef = useRef(false)
   const { cartItems, showToast } = useCart()
   const { accessToken, refreshSession, user, isAuthenticated } = useAuth()
   const isProcessing = paymentStatus !== 'idle'
@@ -92,7 +93,7 @@ function CheckoutForm({ onDeliveryStateChange }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (isProcessing) return
+    if (paymentInFlightRef.current || isProcessing) return
 
     if (!isAuthenticated || !accessToken) {
       const message = 'Please log in again to continue with payment.'
@@ -161,11 +162,14 @@ function CheckoutForm({ onDeliveryStateChange }) {
       })),
     }
 
+    let redirectStarted = false
     try {
+      paymentInFlightRef.current = true
       setPaymentStatus('creating')
       const phonepeOrder = await createPhonePePayment(orderPayload, auth)
       if (!phonepeOrder?.redirectUrl) throw new Error('PhonePe did not return a payment URL.')
-      window.location.href = phonepeOrder.redirectUrl
+      redirectStarted = true
+      window.location.assign(phonepeOrder.redirectUrl)
     } catch (error) {
       if (error?.status === 401 || error?.status === 403) {
         const message = 'Please log in again to continue with payment.'
@@ -185,7 +189,10 @@ function CheckoutForm({ onDeliveryStateChange }) {
       setPaymentError(message)
       showToast(message, error?.message === 'Payment cancelled.' ? 'info' : 'error')
     } finally {
-      setPaymentStatus('idle')
+      if (!redirectStarted) {
+        paymentInFlightRef.current = false
+        setPaymentStatus('idle')
+      }
     }
   }
 

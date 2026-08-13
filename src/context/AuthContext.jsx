@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useCart } from './CartContext'
 import { USE_MOCK_DATA } from '../config/appConfig'
 import {
@@ -44,6 +44,8 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(!USE_MOCK_DATA)
   const [authError, setAuthError] = useState('')
   const { showToast } = useCart()
+  const refreshPromiseRef = useRef(null)
+  const authFailureHandledRef = useRef(false)
 
   const clearAuthError = useCallback(() => setAuthError(''), [])
   const updateCurrentUser = useCallback((nextUser) => {
@@ -58,34 +60,48 @@ export function AuthProvider({ children }) {
 
   const refreshSession = useCallback(async ({ showExpiredMessage = false } = {}) => {
     if (USE_MOCK_DATA) return ''
+    if (refreshPromiseRef.current) return refreshPromiseRef.current
 
+    const refreshPromise = (async () => {
+      try {
+        const data = await refreshAccessToken()
+        const nextToken = data?.accessToken || ''
+        setAccessToken(nextToken)
+        setStoredAuthSessionHint(Boolean(nextToken))
+
+        if (nextToken) {
+          const currentUser = await getCurrentUser(nextToken)
+          setUser(currentUser?.user || null)
+        }
+
+        authFailureHandledRef.current = false
+        setAuthError('')
+        return nextToken
+      } catch (error) {
+        if (!authFailureHandledRef.current) {
+          authFailureHandledRef.current = true
+          setUser(null)
+          setAccessToken('')
+          setStoredAuthSessionHint(false)
+
+          if (showExpiredMessage) {
+            const message = error?.status === 401
+              ? 'Your session has expired. Please log in again.'
+              : getSafeAuthErrorMessage(error, 'Please log in again.')
+            setAuthError(message)
+            showToast(message, 'error')
+          }
+        }
+
+        return ''
+      }
+    })()
+
+    refreshPromiseRef.current = refreshPromise
     try {
-      const data = await refreshAccessToken()
-      const nextToken = data?.accessToken || ''
-      setAccessToken(nextToken)
-      setStoredAuthSessionHint(Boolean(nextToken))
-
-      if (nextToken) {
-        const currentUser = await getCurrentUser(nextToken)
-        setUser(currentUser?.user || null)
-      }
-
-      setAuthError('')
-      return nextToken
-    } catch (error) {
-      setUser(null)
-      setAccessToken('')
-      setStoredAuthSessionHint(false)
-
-      if (showExpiredMessage) {
-        const message = error?.status === 401
-          ? 'Your session has expired. Please log in again.'
-          : getSafeAuthErrorMessage(error, 'Please log in again.')
-        setAuthError(message)
-        showToast(message, 'error')
-      }
-
-      return ''
+      return await refreshPromise
+    } finally {
+      if (refreshPromiseRef.current === refreshPromise) refreshPromiseRef.current = null
     }
   }, [showToast])
 

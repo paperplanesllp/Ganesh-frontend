@@ -9,6 +9,8 @@ function paymentRequest(endpoint, payload, auth) {
   const options = {
     method: 'POST',
     body: payload,
+    // Creating a payment is not safe to replay automatically.
+    skipAuthRetry: true,
   }
 
   if (auth?.accessToken || auth?.refreshSession) {
