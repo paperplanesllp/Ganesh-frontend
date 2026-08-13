@@ -143,7 +143,15 @@ export function ProductDataProvider({ children }) {
         }
 
         if (isCurdChilly(product)) {
-          return { ...product, image: '/images/curd chilli.png', images: ['/images/curd chilli.png'], media: [] }
+          return {
+            ...product,
+            image: '/images/curd chilli.png',
+            images: ['/images/curd chilli.png'],
+            media: [],
+            variants: (product.variants || []).map((variant) =>
+              Number(variant.grams) === 100 ? { ...variant, price: 65 } : variant,
+            ),
+          }
         }
 
         if (isKappaNarthangai(product)) {

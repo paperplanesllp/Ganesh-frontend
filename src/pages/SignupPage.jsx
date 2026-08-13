@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import AuthInput from '../components/auth/AuthInput'
 import AuthLayout from '../components/auth/AuthLayout'
 import PasswordInput from '../components/auth/PasswordInput'
-import PasswordStrength from '../components/auth/PasswordStrength'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useProductData } from '../context/ProductDataContext'
@@ -189,7 +188,6 @@ function SignupPage() {
           disabled={isSubmitting}
           onChange={handleChange}
         />
-        <PasswordStrength password={values.password} />
         <PasswordInput
           inputRef={setFieldRef('confirmPassword')}
           label="Confirm password"
