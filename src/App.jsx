@@ -26,6 +26,7 @@ import ProductDetailsPage from './pages/ProductDetailsPage'
 import ProductsPage from './pages/ProductsPage'
 import PhonePeStatusPage from './pages/PhonePeStatusPage'
 import SignupPage from './pages/SignupPage'
+import TermsAndConditionsPage from './pages/TermsAndConditionsPage'
 
 function App() {
   const location = useLocation()
@@ -149,6 +150,7 @@ function App() {
           <Route path="/admin/not-authorized" element={<AdminNotAuthorizedPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

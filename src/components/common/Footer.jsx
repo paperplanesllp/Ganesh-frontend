@@ -30,6 +30,7 @@ function Footer() {
             <Link className="transition duration-200 text-black hover:text-black" to="/products">Products</Link>
             <Link className="transition duration-200 text-black hover:text-black" to="/about">About</Link>
             <Link className="transition duration-200 text-black hover:text-black" to="/contact">Contact</Link>
+            <Link className="transition duration-200 text-black hover:text-black" to="/terms-and-conditions">Terms &amp; Conditions</Link>
           </nav>
         </section>
 
