@@ -10,7 +10,7 @@ import { useAuth } from '../context/AuthContext'
 import { formatCurrency } from '../utils/currency'
 import { getPrimaryProductImage, getProductGalleryImages, resolveProductImage } from '../utils/productImages'
 import { getProductId, getVariantId } from '../utils/localProductCatalog'
-import { AUTH_ACTIONS, saveAuthIntent } from '../utils/authIntent'
+import { AUTH_ACTIONS, getLoginPath, saveAuthIntent } from '../utils/authIntent'
 
 const RECENTLY_VIEWED_KEY = 'ganesh_pickles_recently_viewed_products'
 
@@ -135,7 +135,7 @@ function ProductDetailsPage() {
         },
         quantity,
       })
-      navigate('/login', {
+      navigate(getLoginPath('/checkout'), {
         state: { from: returnTo, message: 'Please log in to continue to checkout.' },
       })
       return

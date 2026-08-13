@@ -78,7 +78,9 @@ export function AuthProvider({ children }) {
       setStoredAuthSessionHint(false)
 
       if (showExpiredMessage) {
-        const message = getSafeAuthErrorMessage(error, 'Please login again.')
+        const message = error?.status === 401
+          ? 'Your session has expired. Please log in again.'
+          : getSafeAuthErrorMessage(error, 'Please log in again.')
         setAuthError(message)
         showToast(message, 'error')
       }

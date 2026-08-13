@@ -6,7 +6,7 @@ import { getAuthDestination } from '../../utils/authIntent'
 function GuestRoute({ children }) {
   const { isAuthenticated, isLoading, user } = useAuth()
   const location = useLocation()
-  const destination = getAuthDestination(location.state)
+  const destination = getAuthDestination(location.state, location.search)
 
   if (isLoading) return <AuthLoading />
   if (isAuthenticated) {

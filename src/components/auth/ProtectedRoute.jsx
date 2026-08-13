@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import AuthLoading from './AuthLoading'
-import { AUTH_ACTIONS, saveAuthIntent } from '../../utils/authIntent'
+import { AUTH_ACTIONS, getLoginPath, saveAuthIntent } from '../../utils/authIntent'
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, isLoading } = useAuth()
@@ -15,7 +15,7 @@ function ProtectedRoute({ children }) {
 
   return (
     <Navigate
-      to="/login"
+      to={getLoginPath(returnTo)}
       replace
       state={{
         from: returnTo,

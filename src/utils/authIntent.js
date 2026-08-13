@@ -10,6 +10,11 @@ export function getSafeInternalPath(value, fallback = '/') {
     : fallback
 }
 
+export function getLoginPath(returnTo) {
+  const safeReturnTo = getSafeInternalPath(returnTo)
+  return `/login?redirect=${encodeURIComponent(safeReturnTo)}`
+}
+
 export function saveAuthIntent(intent) {
   try {
     const returnTo = getSafeInternalPath(intent?.returnTo)
@@ -55,7 +60,10 @@ export function clearAuthIntent() {
   }
 }
 
-export function getAuthDestination(locationState, fallback = '/') {
+export function getAuthDestination(locationState, search = '', fallback = '/') {
+  const redirect = new URLSearchParams(search).get('redirect')
+  if (redirect) return getSafeInternalPath(redirect, fallback)
+
   const intent = readAuthIntent()
   if (intent?.returnTo) return intent.returnTo
 
@@ -64,6 +72,6 @@ export function getAuthDestination(locationState, fallback = '/') {
   }
 
   const pathname = getSafeInternalPath(locationState?.from?.pathname, fallback)
-  const search = typeof locationState?.from?.search === 'string' ? locationState.from.search : ''
-  return `${pathname}${search}`
+  const stateSearch = typeof locationState?.from?.search === 'string' ? locationState.from.search : ''
+  return `${pathname}${stateSearch}`
 }

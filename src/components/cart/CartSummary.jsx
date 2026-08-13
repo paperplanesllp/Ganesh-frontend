@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
 import { formatCurrency } from '../../utils/currency'
+import { AUTH_ACTIONS, getLoginPath, saveAuthIntent } from '../../utils/authIntent'
 
 function CartSummary({ cartCount, subtotal, deliveryCharge, total, checkout = true, shippingPending = false }) {
   const navigate = useNavigate()
@@ -15,8 +16,9 @@ function CartSummary({ cartCount, subtotal, deliveryCharge, total, checkout = tr
     }
 
     const message = 'Please log in to continue to checkout.'
+    saveAuthIntent({ action: AUTH_ACTIONS.RETURN_TO, returnTo: '/checkout' })
     showToast(message, 'info')
-    navigate('/login', {
+    navigate(getLoginPath('/checkout'), {
       state: {
         from: '/checkout',
         message,

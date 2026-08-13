@@ -6,6 +6,7 @@ import { useCart } from '../../context/CartContext'
 import { createPhonePePayment, getPhonePeConfiguration } from '../../services/paymentService'
 import { validateCheckout } from '../../utils/validation'
 import { INDIAN_STATES_AND_UTS } from '../../utils/shipping'
+import { AUTH_ACTIONS, getLoginPath, saveAuthIntent } from '../../utils/authIntent'
 
 const initialValues = {
   fullName: '',
@@ -95,8 +96,9 @@ function CheckoutForm({ onDeliveryStateChange }) {
 
     if (!isAuthenticated || !accessToken) {
       const message = 'Please log in again to continue with payment.'
+      saveAuthIntent({ action: AUTH_ACTIONS.RETURN_TO, returnTo: '/checkout' })
       showToast(message, 'info')
-      navigate('/login', {
+      navigate(getLoginPath('/checkout'), {
         state: {
           from: '/checkout',
           message,
@@ -167,8 +169,9 @@ function CheckoutForm({ onDeliveryStateChange }) {
     } catch (error) {
       if (error?.status === 401 || error?.status === 403) {
         const message = 'Please log in again to continue with payment.'
+        saveAuthIntent({ action: AUTH_ACTIONS.RETURN_TO, returnTo: '/checkout' })
         showToast(message, 'info')
-        navigate('/login', {
+        navigate(getLoginPath('/checkout'), {
           state: {
             from: '/checkout',
             message,

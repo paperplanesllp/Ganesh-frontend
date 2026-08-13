@@ -101,12 +101,13 @@ function LoginPage() {
       }
 
       const intent = readAuthIntent()
-      const requestedDestination = getAuthDestination(location.state)
+      const requestedDestination = getAuthDestination(location.state, location.search)
       if (intent?.action === AUTH_ACTIONS.BUY_NOW) {
         const product = activeProducts.find((item) => getProductId(item) === intent.productId)
         const variant = product?.variants?.find((item) => getVariantId(item) === intent.variantId)
 
-        if (product && variant && addToCart(product, variant, intent.quantity)) {
+        if (product && variant) {
+          addToCart(product, variant, intent.quantity)
           clearAuthIntent()
           navigate('/checkout', { replace: true })
           return
@@ -205,7 +206,7 @@ function LoginPage() {
 
       <p className="mt-7 border-t border-gray-100 pt-6 text-center text-sm text-gray-500">
         New to Ganesh Pickles?{' '}
-        <Link className="font-bold text-brand underline-offset-4 hover:underline" to="/signup" state={location.state}>
+        <Link className="font-bold text-brand underline-offset-4 hover:underline" to={{ pathname: '/signup', search: location.search }} state={location.state}>
           Create Account
         </Link>
       </p>

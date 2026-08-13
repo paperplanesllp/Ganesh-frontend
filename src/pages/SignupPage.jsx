@@ -99,12 +99,13 @@ function SignupPage() {
       })
       setValues(initialValues)
       const intent = readAuthIntent()
-      const destination = getAuthDestination(location.state)
+      const destination = getAuthDestination(location.state, location.search)
       if (intent?.action === AUTH_ACTIONS.BUY_NOW) {
         const product = activeProducts.find((item) => getProductId(item) === intent.productId)
         const variant = product?.variants?.find((item) => getVariantId(item) === intent.variantId)
 
-        if (product && variant && addToCart(product, variant, intent.quantity)) {
+        if (product && variant) {
+          addToCart(product, variant, intent.quantity)
           clearAuthIntent()
           navigate('/checkout', { replace: true })
           return
@@ -231,7 +232,7 @@ function SignupPage() {
 
       <p className="mt-6 text-center text-sm text-gray-600">
         Already have an account?{' '}
-        <Link className="font-bold text-brand underline-offset-4 hover:underline" to="/login" state={location.state}>
+        <Link className="font-bold text-brand underline-offset-4 hover:underline" to={{ pathname: '/login', search: location.search }} state={location.state}>
           Login
         </Link>
       </p>

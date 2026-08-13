@@ -1,7 +1,7 @@
 import { apiRequest, authenticatedApiRequest } from './api'
 
 const AUTH_UNAVAILABLE_MESSAGE =
-  'Customer accounts are temporarily unavailable. Please try again later.'
+  'Unable to connect to the authentication service. Please try again.'
 
 function isNetworkError(error) {
   return error instanceof TypeError || error?.message === 'Failed to fetch' || error?.message?.includes('NetworkError')
@@ -18,7 +18,9 @@ export function getSafeAuthErrorMessage(error, fallback = 'Authentication failed
   if (error?.status === 403) return 'Access denied. Please sign in again.'
   if (error?.status === 409) return 'An account with these details already exists.'
   if (error?.status === 429) return 'Too many attempts. Please wait a little and try again.'
-  if (error?.status >= 500) return 'Authentication server error. Please try again later.'
+  if (error?.status >= 500) return error?.message && error.message !== 'Something went wrong'
+    ? String(error.message).slice(0, 180)
+    : 'The authentication service is temporarily unavailable. Please try again later.'
 
   return String(error?.message || fallback).slice(0, 180)
 }
