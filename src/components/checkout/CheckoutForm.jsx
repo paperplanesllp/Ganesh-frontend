@@ -24,13 +24,13 @@ const initialValues = {
 
 const PAYMENT_CONFIG_MESSAGE = USE_MOCK_DATA
   ? 'PhonePe is not available in frontend preview mode. Enable the backend API to test payments.'
-  : 'PhonePe is not configured yet. Please try again later.'
+  : 'PhonePe payment is currently unavailable.'
 
 function getSafePaymentError(error) {
   if (error?.message === 'Payment cancelled.') return 'Payment was cancelled. Your cart is unchanged.'
   if (error?.status === 422) return error.message || 'Please check your cart and delivery details.'
-  if (error?.status === 503) return 'Online payment is not configured yet. Please try again later.'
-  if (error?.status >= 500) return 'Payment service is unavailable. Please try again shortly.'
+  if (error?.status === 503) return 'PhonePe payment is currently unavailable.'
+  if (error?.status >= 500) return 'Unable to start PhonePe payment. Please try again.'
   if (error instanceof TypeError || error?.message === 'Failed to fetch') return 'Unable to reach the payment server. Please try again.'
   return 'Payment could not be completed. Please try again.'
 }
@@ -69,7 +69,7 @@ function CheckoutForm({ onDeliveryStateChange }) {
     let active = true
     getPhonePeConfiguration()
       .then((configuration) => {
-        if (active) setIsPhonePeAvailable(Boolean(configuration?.enabled))
+        if (active) setIsPhonePeAvailable(Boolean(configuration?.paymentConfigured))
       })
       .catch(() => {
         if (active) setIsPhonePeAvailable(false)
@@ -273,7 +273,7 @@ function CheckoutForm({ onDeliveryStateChange }) {
       </div>
 
       <div className="mt-6 rounded-xl border border-gray-200 p-4 text-sm font-semibold text-gray-900">
-        Payment method: {isPhonePeAvailable ? 'PhonePe' : 'PhonePe (coming soon)'}
+        Payment method: PhonePe
       </div>
 
       {paymentError && (

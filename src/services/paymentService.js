@@ -23,7 +23,7 @@ export function createPhonePePayment(payload, auth) {
 }
 
 export function getPhonePeConfiguration() {
-  if (USE_MOCK_DATA) return Promise.resolve({ enabled: false })
+  if (USE_MOCK_DATA) return Promise.resolve({ paymentConfigured: false, webhookConfigured: false })
   return apiRequest('/payments/phonepe/config', { method: 'GET' })
 }
 
