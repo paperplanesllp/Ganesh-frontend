@@ -78,8 +78,8 @@ function AdminOrderCard({ order, savingId, onStatusChange }) {
               <h3 className="font-bold text-gray-900">Payment information</h3>
               <dl className="mt-3 grid gap-2 text-sm">
                 <div><dt className="text-gray-500">Status</dt><dd className="font-bold text-gray-900">{titleCase(order.paymentStatus)}</dd></div>
-                <div><dt className="text-gray-500">Razorpay order ID</dt><dd className="break-all font-medium text-gray-900">{order.razorpayOrderId || 'Not available'}</dd></div>
-                <div><dt className="text-gray-500">Payment ID</dt><dd className="break-all font-medium text-gray-900">{order.razorpayPaymentId || 'Not available'}</dd></div>
+                <div><dt className="text-gray-500">PhonePe order ID</dt><dd className="break-all font-medium text-gray-900">{order.phonepe?.phonepeOrderId || order.phonepe?.merchantOrderId || 'Not available'}</dd></div>
+                <div><dt className="text-gray-500">Transaction ID</dt><dd className="break-all font-medium text-gray-900">{order.phonepe?.transactionId || 'Not available'}</dd></div>
                 {order.paidAt && <div><dt className="text-gray-500">Paid at</dt><dd className="font-medium text-gray-900">{formatDate(order.paidAt)}</dd></div>}
                 {order.failureReason && <div><dt className="text-gray-500">Failure reason</dt><dd className="font-medium text-red-700">{order.failureReason}</dd></div>}
               </dl>

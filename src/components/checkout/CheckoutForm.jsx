@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { USE_MOCK_DATA } from '../../config/appConfig'
 import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
-import { createPaymentOrder, createPhonePePayment, getPhonePeConfiguration, startRazorpayPayment, verifyPayment } from '../../services/paymentService'
+import { createPhonePePayment, getPhonePeConfiguration } from '../../services/paymentService'
 import { validateCheckout } from '../../utils/validation'
 import { INDIAN_STATES_AND_UTS } from '../../utils/shipping'
 
@@ -22,8 +22,8 @@ const initialValues = {
 }
 
 const PAYMENT_CONFIG_MESSAGE = USE_MOCK_DATA
-  ? 'Online payment is not configured for preview mode. Enable the backend API and add Razorpay test keys.'
-  : 'Razorpay is not configured. Add the public Razorpay key ID to the frontend environment.'
+  ? 'PhonePe is not available in frontend preview mode. Enable the backend API to test payments.'
+  : 'PhonePe is not configured yet. Please try again later.'
 
 function getSafePaymentError(error) {
   if (error?.message === 'Payment cancelled.') return 'Payment was cancelled. Your cart is unchanged.'
@@ -40,19 +40,16 @@ function CheckoutForm({ onDeliveryStateChange }) {
   const [errors, setErrors] = useState({})
   const [paymentError, setPaymentError] = useState('')
   const [paymentStatus, setPaymentStatus] = useState('idle')
-  const [paymentMethod, setPaymentMethod] = useState('razorpay')
   const [isPhonePeAvailable, setIsPhonePeAvailable] = useState(false)
   const [touchedFields, setTouchedFields] = useState({})
-  const { cartItems, clearCart, showToast } = useCart()
+  const { cartItems, showToast } = useCart()
   const { accessToken, refreshSession, user, isAuthenticated } = useAuth()
-  const isRazorpayConfigured = !USE_MOCK_DATA && Boolean(import.meta.env.VITE_RAZORPAY_KEY_ID)
-  const selectedGatewayAvailable = paymentMethod === 'phonepe' ? isPhonePeAvailable : isRazorpayConfigured
   const isProcessing = paymentStatus !== 'idle'
   const buttonLabel = paymentStatus === 'creating'
     ? 'Creating secure payment...'
     : paymentStatus === 'verifying'
       ? 'Verifying payment...'
-      : paymentMethod === 'phonepe' ? 'Pay Securely with PhonePe' : 'Pay Securely with Razorpay'
+      : 'Pay Securely with PhonePe'
 
   useEffect(() => {
     if (!isAuthenticated || !user) return
@@ -127,7 +124,7 @@ function CheckoutForm({ onDeliveryStateChange }) {
       return
     }
 
-    if (!selectedGatewayAvailable) {
+    if (!isPhonePeAvailable) {
       setPaymentError(PAYMENT_CONFIG_MESSAGE)
       showToast(PAYMENT_CONFIG_MESSAGE, 'info')
       return
@@ -164,44 +161,9 @@ function CheckoutForm({ onDeliveryStateChange }) {
 
     try {
       setPaymentStatus('creating')
-      if (paymentMethod === 'phonepe') {
-        const phonepeOrder = await createPhonePePayment(orderPayload, auth)
-        if (!phonepeOrder?.redirectUrl) throw new Error('PhonePe did not return a payment URL.')
-        window.location.href = phonepeOrder.redirectUrl
-        return
-      }
-      const order = await createPaymentOrder(orderPayload, auth)
-      const razorpayResponse = await startRazorpayPayment({
-        order,
-        customer: values,
-        notes: {
-          internalOrderId: order.internalOrderId,
-        },
-      })
-
-      setPaymentStatus('verifying')
-      const verification = await verifyPayment(
-        {
-          razorpay_order_id: razorpayResponse.razorpay_order_id,
-          razorpay_payment_id: razorpayResponse.razorpay_payment_id,
-          razorpay_signature: razorpayResponse.razorpay_signature,
-          internalOrderId: order.internalOrderId,
-        },
-        auth,
-      )
-
-      clearCart()
-      showToast('Payment verified successfully.', 'success')
-      navigate('/order-success', {
-        state: {
-          verified: true,
-          orderId: verification.orderId || order.internalOrderId,
-          paymentId: verification.paymentId || razorpayResponse.razorpay_payment_id,
-          subtotal: order.subtotal,
-          deliveryCharge: order.deliveryCharge,
-          totalAmount: order.totalAmount,
-        },
-      })
+      const phonepeOrder = await createPhonePePayment(orderPayload, auth)
+      if (!phonepeOrder?.redirectUrl) throw new Error('PhonePe did not return a payment URL.')
+      window.location.href = phonepeOrder.redirectUrl
     } catch (error) {
       if (error?.status === 401 || error?.status === 403) {
         const message = 'Please log in again to continue with payment.'
@@ -307,20 +269,9 @@ function CheckoutForm({ onDeliveryStateChange }) {
         </label>
       </div>
 
-      <fieldset className="mt-6">
-        <legend className="text-sm font-semibold text-gray-900">Payment Method</legend>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
-          {[
-            { value: 'razorpay', label: 'Razorpay', disabled: false },
-            { value: 'phonepe', label: isPhonePeAvailable ? 'PhonePe' : 'PhonePe (coming soon)', disabled: !isPhonePeAvailable },
-          ].map((method) => (
-            <label key={method.value} className={`flex items-center gap-3 rounded-xl border border-gray-200 p-4 text-sm font-semibold ${method.disabled ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer text-gray-900'}`}>
-              <input type="radio" name="paymentMethod" value={method.value} disabled={method.disabled} checked={paymentMethod === method.value} onChange={(event) => { setPaymentMethod(event.target.value); setPaymentError('') }} />
-              {method.label}
-            </label>
-          ))}
-        </div>
-      </fieldset>
+      <div className="mt-6 rounded-xl border border-gray-200 p-4 text-sm font-semibold text-gray-900">
+        Payment method: {isPhonePeAvailable ? 'PhonePe' : 'PhonePe (coming soon)'}
+      </div>
 
       {paymentError && (
         <div className="mt-6 rounded-xl border border-brand/30 bg-white p-4 text-sm font-semibold text-brand">
@@ -328,7 +279,7 @@ function CheckoutForm({ onDeliveryStateChange }) {
         </div>
       )}
 
-      {!paymentError && paymentMethod === 'razorpay' && !isRazorpayConfigured && (
+      {!paymentError && !isPhonePeAvailable && (
         <div className="mt-6 rounded-xl border border-brand/30 bg-white p-4 text-sm font-semibold text-brand">
           {PAYMENT_CONFIG_MESSAGE}
         </div>
@@ -337,7 +288,7 @@ function CheckoutForm({ onDeliveryStateChange }) {
       <button
         type="submit"
         className="mt-6 min-h-12 w-full rounded-lg bg-brand px-5 py-3 font-extrabold text-white transition duration-200 hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70"
-        disabled={isProcessing || !selectedGatewayAvailable}
+        disabled={isProcessing || !isPhonePeAvailable}
       >
         {buttonLabel}
       </button>

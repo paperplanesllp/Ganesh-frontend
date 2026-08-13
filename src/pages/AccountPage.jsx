@@ -411,7 +411,7 @@ function OrderCard({ order }) {
           <div className="mt-3 grid gap-1 text-sm text-gray-600">
             <p><span className="font-bold text-gray-900">Order ID:</span> {order.orderId}</p>
             <p><span className="font-bold text-gray-900">Order date:</span> {formatDate(order.createdAt)}</p>
-            <p><span className="font-bold text-gray-900">Payment method:</span> {order.paymentMethod || 'Razorpay'}</p>
+            <p><span className="font-bold text-gray-900">Payment method:</span> PhonePe</p>
             <p><span className="font-bold text-gray-900">Delivery:</span> {getAddressSummary(order.shippingAddress)}</p>
           </div>
         </div>
@@ -471,7 +471,7 @@ function OrdersSection({ auth }) {
       const matchesFilter = filter === 'All' || getOrderFilterStatus(order.orderStatus) === filter
       const text = [
         order.orderId,
-        order.razorpayOrderId,
+        order.phonepe?.merchantOrderId,
         order.paymentStatus,
         order.orderStatus,
         ...(order.products || []).map((item) => item.productName),
