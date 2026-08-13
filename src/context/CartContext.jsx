@@ -4,7 +4,6 @@ import { getProductId, getVariantId } from '../utils/localProductCatalog'
 
 const CartContext = createContext(null)
 const CART_STORAGE_KEY = 'ganesh-pickles-cart'
-const DELIVERY_CHARGE = 0
 
 function isPositiveFiniteNumber(value) {
   return Number.isFinite(value) && value > 0
@@ -240,13 +239,9 @@ export function CartProvider({ children }) {
     [cartItems],
   )
 
-  const deliveryCharge = useMemo(
-    () => cartItems.reduce(
-      (highest, item) => Math.max(highest, Math.max(0, Number(item.deliveryCharge) || 0)),
-      DELIVERY_CHARGE,
-    ),
-    [cartItems],
-  )
+  // The delivery state is collected at checkout, so cart totals exclude shipping.
+  // The backend remains authoritative for the final order-level charge.
+  const deliveryCharge = 0
   const total = subtotal + deliveryCharge
 
   const value = {

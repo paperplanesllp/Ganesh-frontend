@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
 import { formatCurrency } from '../../utils/currency'
 
-function CartSummary({ cartCount, subtotal, deliveryCharge, total, checkout = true }) {
+function CartSummary({ cartCount, subtotal, deliveryCharge, total, checkout = true, shippingPending = false }) {
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
   const { showToast } = useCart()
@@ -37,15 +37,15 @@ function CartSummary({ cartCount, subtotal, deliveryCharge, total, checkout = tr
           <span className="font-semibold text-gray-900">{formatCurrency(subtotal)}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600">Delivery</span>
+          <span className="text-gray-600">Shipping</span>
           <span className="font-semibold text-brand">
-            {deliveryCharge === 0 ? 'Free delivery' : formatCurrency(deliveryCharge)}
+            {shippingPending ? 'Calculated at checkout' : formatCurrency(deliveryCharge)}
           </span>
         </div>
         <div className="border-t border-gray-200 pt-3">
           <div className="flex justify-between text-lg font-bold text-brand-dark">
-            <span>Grand total</span>
-            <span>{formatCurrency(total)}</span>
+            <span>Total</span>
+            <span>{shippingPending ? formatCurrency(subtotal) : formatCurrency(total)}</span>
           </div>
         </div>
       </div>

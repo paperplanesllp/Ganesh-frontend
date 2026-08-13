@@ -5,7 +5,7 @@ const currentYear = new Date().getFullYear()
 function Footer() {
   return (
     <footer className="bg-white py-12 text-black">
-      <div className="mx-auto grid max-w-[1280px] gap-10 px-4 sm:px-6 md:grid-cols-[1.2fr_0.8fr_0.8fr] lg:px-8">
+      <div className="mx-auto grid max-w-[1280px] gap-10 px-4 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.2fr_0.7fr_0.9fr_0.9fr] lg:px-8">
         <section>
           <Link to="/" aria-label="Ganesh Pickles home" className="inline-block">
             <img
@@ -30,7 +30,17 @@ function Footer() {
             <Link className="transition duration-200 text-black hover:text-black" to="/products">Products</Link>
             <Link className="transition duration-200 text-black hover:text-black" to="/about">About</Link>
             <Link className="transition duration-200 text-black hover:text-black" to="/contact">Contact</Link>
+          </nav>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-bold uppercase tracking-wide text-black">Policies</h2>
+          <nav className="mt-4 grid gap-2 text-sm text-black" aria-label="Policy navigation">
             <Link className="transition duration-200 text-black hover:text-black" to="/terms-and-conditions">Terms &amp; Conditions</Link>
+            <Link className="transition duration-200 text-black hover:text-black" to="/privacy-policy">Privacy Policy</Link>
+            <Link className="transition duration-200 text-black hover:text-black" to="/refund-policy">Refund Policy</Link>
+            <Link className="transition duration-200 text-black hover:text-black" to="/return-policy">Return Policy</Link>
+            <Link className="transition duration-200 text-black hover:text-black" to="/shipping-policy">Shipping Policy</Link>
           </nav>
         </section>
 

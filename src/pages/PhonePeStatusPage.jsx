@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { getPhonePePaymentStatus } from '../services/paymentService'
+import { formatCurrency } from '../utils/currency'
 
 const MAX_CHECKS = 4
 const CHECK_INTERVAL_MS = 5000
@@ -16,6 +17,7 @@ function PhonePeStatusPage() {
   clearCartRef.current = clearCart
   const [status, setStatus] = useState('checking')
   const [message, setMessage] = useState('Checking payment...')
+  const [orderSummary, setOrderSummary] = useState(null)
 
   useEffect(() => {
     let active = true
@@ -31,6 +33,7 @@ function PhonePeStatusPage() {
         if (!active) return
         if (result.paymentStatus === 'paid') {
           clearCartRef.current()
+          setOrderSummary(result)
           setStatus('paid')
           setMessage('Payment successful')
           return
@@ -61,6 +64,13 @@ function PhonePeStatusPage() {
           <p className="mb-3 text-sm font-bold uppercase text-brand">PhonePe payment</p>
           <h1 className="font-[Georgia,serif] text-4xl font-bold text-brand-dark">{message}</h1>
           {orderId && <p className="mt-4 text-sm text-gray-600">Order ID: {orderId}</p>}
+          {status === 'paid' && orderSummary && (
+            <div className="mx-auto mt-6 grid max-w-sm gap-2 rounded-xl bg-brand-light p-4 text-left text-sm text-gray-600">
+              <p className="flex justify-between"><span>Subtotal</span><strong>{formatCurrency(orderSummary.subtotal)}</strong></p>
+              <p className="flex justify-between"><span>Shipping</span><strong>{formatCurrency(orderSummary.deliveryCharge)}</strong></p>
+              <p className="flex justify-between border-t border-brand/20 pt-2 text-base text-brand-dark"><span className="font-bold">Total</span><strong>{formatCurrency(orderSummary.totalAmount)}</strong></p>
+            </div>
+          )}
           {status === 'checking' && <p className="mt-4 text-gray-600">Please wait while we verify the result securely.</p>}
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             {status === 'paid' ? <Link to="/products" className="rounded-full bg-brand px-6 py-3 font-semibold text-white">Continue Shopping</Link> : <Link to="/account/orders" className="rounded-full bg-brand px-6 py-3 font-semibold text-white">View Orders</Link>}

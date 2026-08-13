@@ -615,6 +615,11 @@ function OrderDetailsSection({ auth, orderId }) {
           </div>
           <p className="text-2xl font-extrabold text-brand-dark">{formatCurrency(order.totalAmount)}</p>
         </div>
+        <div className="mt-5 ml-auto grid max-w-sm gap-2 border-t border-gray-200 pt-4 text-sm">
+          <p className="flex justify-between"><span className="text-gray-600">Subtotal</span><strong>{formatCurrency(order.subtotal)}</strong></p>
+          <p className="flex justify-between"><span className="text-gray-600">Shipping</span><strong>{formatCurrency(order.deliveryCharge)}</strong></p>
+          <p className="flex justify-between border-t border-gray-200 pt-2 text-base"><span className="font-bold">Total</span><strong className="text-brand-dark">{formatCurrency(order.totalAmount)}</strong></p>
+        </div>
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">

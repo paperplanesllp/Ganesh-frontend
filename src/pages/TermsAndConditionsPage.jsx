@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const sections = [
@@ -197,6 +198,15 @@ const sections = [
 ]
 
 function TermsAndConditionsPage() {
+  useEffect(() => {
+    const previousTitle = document.title
+    document.title = 'Terms & Conditions | Ganesh Pickles'
+
+    return () => {
+      document.title = previousTitle
+    }
+  }, [])
+
   return (
     <div className="bg-white">
       <header className="border-b border-gray-200">

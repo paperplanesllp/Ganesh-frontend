@@ -73,6 +73,7 @@ function CartPage() {
                 subtotal={subtotal}
                 deliveryCharge={deliveryCharge}
                 total={total}
+                shippingPending
               />
             </div>
           )}

@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import { formatCurrency } from '../utils/currency'
 
 function OrderSuccessPage() {
   const { state } = useLocation()
@@ -53,6 +54,13 @@ function OrderSuccessPage() {
               <p className="mt-2">
                 <span className="font-bold text-gray-900">Payment ID:</span> {state.paymentId}
               </p>
+            )}
+            {Number.isFinite(state.subtotal) && (
+              <div className="mt-4 grid gap-2 border-t border-brand/20 pt-4">
+                <p className="flex justify-between"><span>Subtotal</span><strong>{formatCurrency(state.subtotal)}</strong></p>
+                <p className="flex justify-between"><span>Shipping</span><strong>{formatCurrency(state.deliveryCharge)}</strong></p>
+                <p className="flex justify-between border-t border-brand/20 pt-2 text-base text-brand-dark"><span className="font-bold">Total</span><strong>{formatCurrency(state.totalAmount)}</strong></p>
+              </div>
             )}
           </div>
           <Link

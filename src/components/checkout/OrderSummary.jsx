@@ -1,9 +1,12 @@
 import { useCart } from '../../context/CartContext'
 import { formatCurrency } from '../../utils/currency'
 import CartSummary from '../cart/CartSummary'
+import { calculateShippingCharge } from '../../utils/shipping'
 
-function OrderSummary() {
-  const { cartItems, cartCount, subtotal, deliveryCharge, total } = useCart()
+function OrderSummary({ deliveryState }) {
+  const { cartItems, cartCount, subtotal } = useCart()
+  const deliveryCharge = calculateShippingCharge(deliveryState)
+  const total = subtotal + deliveryCharge
 
   return (
     <div className="grid gap-4">
@@ -30,7 +33,7 @@ function OrderSummary() {
           ))}
         </div>
         <p className="mt-4 rounded-xl bg-brand-light p-3 text-sm font-semibold text-brand">
-          {deliveryCharge === 0 ? 'Free delivery' : `Delivery charge: ${formatCurrency(deliveryCharge)}`}
+          Shipping to {deliveryState}: {formatCurrency(deliveryCharge)} per order
         </p>
       </div>
     </div>

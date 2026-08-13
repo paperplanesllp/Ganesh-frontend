@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
 import { createPaymentOrder, createPhonePePayment, getPhonePeConfiguration, startRazorpayPayment, verifyPayment } from '../../services/paymentService'
 import { validateCheckout } from '../../utils/validation'
+import { INDIAN_STATES_AND_UTS } from '../../utils/shipping'
 
 const initialValues = {
   fullName: '',
@@ -33,7 +34,7 @@ function getSafePaymentError(error) {
   return 'Payment could not be completed. Please try again.'
 }
 
-function CheckoutForm() {
+function CheckoutForm({ onDeliveryStateChange }) {
   const navigate = useNavigate()
   const [values, setValues] = useState(initialValues)
   const [errors, setErrors] = useState({})
@@ -81,6 +82,7 @@ function CheckoutForm() {
   const handleChange = (event) => {
     const { name, value } = event.target
     setValues((current) => ({ ...current, [name]: value }))
+    if (name === 'state') onDeliveryStateChange?.(value)
     setTouchedFields((current) => ({ ...current, [name]: true }))
     setErrors((current) => {
       if (!current[name]) return current
@@ -195,6 +197,9 @@ function CheckoutForm() {
           verified: true,
           orderId: verification.orderId || order.internalOrderId,
           paymentId: verification.paymentId || razorpayResponse.razorpay_payment_id,
+          subtotal: order.subtotal,
+          deliveryCharge: order.deliveryCharge,
+          totalAmount: order.totalAmount,
         },
       })
     } catch (error) {
@@ -249,7 +254,21 @@ function CheckoutForm() {
         {renderInput({ name: 'email', label: 'Email address', autoComplete: 'email', type: 'email' })}
         {renderInput({ name: 'city', label: 'City', autoComplete: 'address-level2' })}
         {renderInput({ name: 'district', label: 'District', autoComplete: 'address-level2' })}
-        {renderInput({ name: 'state', label: 'State', autoComplete: 'address-level1' })}
+        <label className="grid gap-2 text-sm font-semibold text-gray-900">
+          State / Union Territory
+          <select
+            className={fieldClass}
+            name="state"
+            value={values.state}
+            onChange={handleChange}
+            autoComplete="address-level1"
+            aria-invalid={Boolean(errors.state)}
+            aria-describedby={errors.state ? 'state-error' : undefined}
+          >
+            {INDIAN_STATES_AND_UTS.map((state) => <option key={state} value={state}>{state}</option>)}
+          </select>
+          {errors.state && <span id="state-error" className="text-xs font-semibold text-brand">{errors.state}</span>}
+        </label>
         {renderInput({ name: 'pincode', label: 'Six-digit PIN code', autoComplete: 'postal-code' })}
         {renderInput({ name: 'landmark', label: 'Landmark', autoComplete: 'off', required: false })}
         <label className="grid gap-2 text-sm font-semibold text-gray-900 md:col-span-2">

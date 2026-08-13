@@ -1,0 +1,21 @@
+import PolicyContact from '../components/common/PolicyContact'
+import PolicyPageLayout from '../components/common/PolicyPageLayout'
+
+const sections = [
+  { title: 'Overview', content: <p>This policy explains when Ganesh Pickles may provide a refund for packaged food products. Each request is reviewed fairly based on the order records, product condition, evidence supplied, food-safety considerations, and applicable Indian consumer law.</p> },
+  { title: 'Refund Eligibility', content: <p>A refund or other appropriate resolution may be available when a product arrives damaged, leaking, tampered with, defective or spoiled, when the wrong product is delivered, when an item is missing, or when an accepted order cannot be fulfilled.</p> },
+  { title: 'Damaged, Defective, or Incorrect Products', content: <p>Do not consume a product that appears unsafe or tampered with. Keep the product, label, original packaging, and delivery packaging while we review the issue. Depending on verification and availability, we may offer a replacement, refund, or another remedy required by law.</p> },
+  { title: 'Missing Products', content: <p>If an item shown in your order confirmation is missing from the parcel, contact us with the order number and details of the missing item. We will compare the request with our order and fulfilment records before providing an appropriate resolution.</p> },
+  { title: 'Failed or Cancelled Payments', content: <p>If payment is deducted but the order is not successfully created, or if we cancel a paid order we cannot fulfil, the transaction will be checked against our payment-provider records. Any amount confirmed as received and eligible for reversal will be refunded through the original payment method.</p> },
+  { title: 'Evidence and How to Make a Request', content: <div><p>Contact us with your order number, contact details, a clear description of the issue, and clear photographs or video of the product, seal, label, outer packaging, and shipping label where reasonably relevant.</p><p className="mt-3 font-semibold text-brand-dark">TODO: Confirm the period within which customers must report a refund issue after delivery.</p></div> },
+  { title: 'Refund Review and Processing', content: <div><p>We may ask reasonable follow-up questions and verify the order, payment, packaging, delivery, and product condition. Once approved, we will initiate the refund and notify you. Banks and payment providers may require additional time to credit the amount.</p><p className="mt-3 font-semibold text-brand-dark">TODO: Confirm the business refund-processing timeframe.</p></div> },
+  { title: 'Refund Method', content: <p>Approved refunds will ordinarily be issued to the original payment method. If that is not technically possible, we will contact you about a lawful alternative. We will never ask for a UPI PIN, CVV, card PIN, password, or one-time password to process a refund.</p> },
+  { title: 'Non-Refundable Situations', content: <p>Refunds are generally unavailable for change of mind, taste preference, natural variations that do not affect safety or quality, incorrect storage after delivery, damage caused after delivery, or products that have been substantially consumed, altered, or discarded before reasonable verification. This does not limit remedies that cannot be excluded under applicable law.</p> },
+  { title: 'Opened or Consumed Food Products', content: <p>Because our products are food items, opened or consumed products cannot ordinarily be refunded unless the opening was reasonably necessary to discover a verified defect, spoilage, contamination, or other qualifying issue. Please stop using the product and contact us promptly if a problem is discovered.</p> },
+  { title: 'Fraudulent or Abusive Claims', content: <p>We may reject claims supported by false information, manipulated evidence, repeated abuse, refusal to provide reasonable verification, or circumstances inconsistent with order records. We may restrict accounts or take lawful action where fraud is suspected.</p> },
+  { title: 'Contact Information', content: <PolicyContact subject="a refund or payment issue" /> },
+]
+
+export default function RefundPolicyPage() {
+  return <PolicyPageLayout title="Refund Policy" sections={sections} />
+}

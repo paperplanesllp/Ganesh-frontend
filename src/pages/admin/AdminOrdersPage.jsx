@@ -99,7 +99,7 @@ function AdminOrderCard({ order, savingId, onStatusChange }) {
             </div>
             <div className="ml-auto mt-4 grid max-w-sm gap-2 text-sm">
               <div className="flex justify-between"><span className="text-gray-600">Subtotal</span><strong>{formatCurrency(order.subtotal)}</strong></div>
-              <div className="flex justify-between"><span className="text-gray-600">Delivery</span><strong>{formatCurrency(order.deliveryCharge)}</strong></div>
+              <div className="flex justify-between"><span className="text-gray-600">Shipping</span><strong>{formatCurrency(order.deliveryCharge)}</strong></div>
               <div className="flex justify-between border-t border-gray-200 pt-2 text-base"><span className="font-bold">Total</span><strong className="text-brand">{formatCurrency(order.totalAmount)}</strong></div>
             </div>
           </section>

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import CheckoutForm from '../components/checkout/CheckoutForm'
 import OrderSummary from '../components/checkout/OrderSummary'
@@ -6,6 +7,7 @@ import { useCart } from '../context/CartContext'
 
 function CheckoutPage() {
   const { cartItems } = useCart()
+  const [deliveryState, setDeliveryState] = useState('Kerala')
 
   return (
     <>
@@ -31,8 +33,8 @@ function CheckoutPage() {
             </div>
           ) : (
             <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
-              <CheckoutForm />
-              <OrderSummary />
+              <CheckoutForm onDeliveryStateChange={setDeliveryState} />
+              <OrderSummary deliveryState={deliveryState} />
             </div>
           )}
         </div>
