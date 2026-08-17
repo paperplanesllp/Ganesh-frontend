@@ -39,6 +39,7 @@ function WeightSelector({ variants, selectedVariant, onChange, showBottleOptions
       .sort((a, b) => Number(a.packageType === 'bottle') - Number(b.packageType === 'bottle'))
       .map((variant) => [Number(variant.grams), variant]),
   ).values()]
+    .sort((a, b) => Number(a.grams) - Number(b.grams))
     .map((variant) => ({
       ...variant,
       packageType: 'bottle',
