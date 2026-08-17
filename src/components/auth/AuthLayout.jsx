@@ -37,7 +37,7 @@ function AuthLayout({ badge, title, subtitle, variant = 'split', children }) {
             />
             <span>
               <span className="block font-[Georgia,serif] text-xl font-bold leading-tight text-brand-dark">Ganesh Pickles</span>
-              <span className="hidden text-xs font-medium text-gray-500 sm:block">Spicing up tradition in every jar </span>
+              <span className="hidden text-xs font-medium text-gray-500 sm:block">Spicing up tradition in every jar</span>
             </span>
           </Link>
           <Link

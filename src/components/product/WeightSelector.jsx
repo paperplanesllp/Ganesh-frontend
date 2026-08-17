@@ -31,15 +31,12 @@ function VariantButtons({ variants, selectedVariant, onChange }) {
 function WeightSelector({ variants, selectedVariant, onChange, showBottleOptions = false }) {
   const bottleSizes = [300, 500]
   const isBottleVariant = (variant) =>
-    variant.packageType === 'bottle' || (
-      showBottleOptions && !variant.packageType && bottleSizes.includes(Number(variant.grams))
-    )
-  const pouchVariants = variants.filter((variant) =>
-    !isBottleVariant(variant) && !(showBottleOptions && Number(variant.grams) === 500)
-  )
+    variant.packageType === 'bottle' || (showBottleOptions && bottleSizes.includes(Number(variant.grams)))
+  const pouchVariants = variants.filter((variant) => !isBottleVariant(variant))
   const bottleVariants = [...new Map(
     variants
       .filter(isBottleVariant)
+      .sort((a, b) => Number(a.packageType === 'bottle') - Number(b.packageType === 'bottle'))
       .map((variant) => [Number(variant.grams), variant]),
   ).values()]
     .map((variant) => ({
