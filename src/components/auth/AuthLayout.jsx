@@ -53,10 +53,10 @@ function AuthLayout({ badge, title, subtitle, variant = 'split', children }) {
             <img
               src="/images/mango.png"
               alt=""
-              className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-30 mix-blend-soft-light"
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-50 mix-blend-soft-light"
               aria-hidden="true"
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-brand-dark/30 via-brand-dark/65 to-brand-dark/90" aria-hidden="true" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-brand-dark/15 via-brand-dark/40 to-brand-dark/65" aria-hidden="true" />
             <div className="absolute -right-24 -top-24 h-64 w-64 rounded-full border-[44px] border-white/5" />
             <div className="absolute -bottom-28 -left-24 h-72 w-72 rounded-full border-[52px] border-white/5" />
             <div className="relative">
