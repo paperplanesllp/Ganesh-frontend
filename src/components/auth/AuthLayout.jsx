@@ -37,7 +37,7 @@ function AuthLayout({ badge, title, subtitle, variant = 'split', children }) {
             />
             <span>
               <span className="block font-[Georgia,serif] text-xl font-bold leading-tight text-brand-dark">Ganesh Pickles</span>
-              <span className="hidden text-xs font-medium text-gray-500 sm:block">Traditional taste, made with care</span>
+              <span className="hidden text-xs font-medium text-gray-500 sm:block">Spicing up tradition in every jar </span>
             </span>
           </Link>
           <Link
@@ -50,6 +50,13 @@ function AuthLayout({ badge, title, subtitle, variant = 'split', children }) {
 
         <div className={`grid overflow-hidden rounded-3xl border border-gray-200/80 bg-white shadow-[0_24px_70px_rgba(50,30,20,0.10)] ${isSingleColumn ? '' : 'lg:grid-cols-[0.82fr_1.18fr]'}`}>
           {!isSingleColumn && <aside className="relative hidden overflow-hidden bg-brand-dark p-10 text-white lg:flex lg:flex-col lg:justify-between">
+            <img
+              src="/images/mango.png"
+              alt=""
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-30 mix-blend-soft-light"
+              aria-hidden="true"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-brand-dark/30 via-brand-dark/65 to-brand-dark/90" aria-hidden="true" />
             <div className="absolute -right-24 -top-24 h-64 w-64 rounded-full border-[44px] border-white/5" />
             <div className="absolute -bottom-28 -left-24 h-72 w-72 rounded-full border-[52px] border-white/5" />
             <div className="relative">
