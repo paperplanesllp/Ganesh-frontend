@@ -1,14 +1,5 @@
 import { Link } from 'react-router-dom'
 
-function LeafMark() {
-  return (
-    <svg className="h-8 w-8" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-      <path d="M31.5 8.5C20 9 11.5 15.8 10 29c10.8.4 19.5-6.7 21.5-20.5Z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-      <path d="M8 33c4.8-8 10.7-13.3 18-17" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-    </svg>
-  )
-}
-
 function DecorativeDots({ className = '' }) {
   return (
     <div className={`grid grid-cols-5 gap-1.5 opacity-45 ${className}`} aria-hidden="true">
@@ -39,9 +30,11 @@ function AuthLayout({ badge, title, subtitle, variant = 'split', children }) {
       <div className={`relative mx-auto flex min-h-[calc(100vh-3rem)] flex-col sm:min-h-[calc(100vh-5rem)] ${isSingleColumn ? 'max-w-2xl' : 'max-w-5xl justify-center'}`}>
         <header className="mb-6 flex items-center justify-between gap-4">
           <Link to="/" className="group flex items-center gap-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-brand text-white shadow-sm transition group-hover:bg-brand-dark">
-              <LeafMark />
-            </span>
+            <img
+              src="/images/ganesh-logo-navbar.png"
+              alt="Ganesh Pickles"
+              className="h-10 w-auto object-contain transition group-hover:opacity-90 sm:h-12"
+            />
             <span>
               <span className="block font-[Georgia,serif] text-xl font-bold leading-tight text-brand-dark">Ganesh Pickles</span>
               <span className="hidden text-xs font-medium text-gray-500 sm:block">Traditional taste, made with care</span>

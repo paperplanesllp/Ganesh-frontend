@@ -34,7 +34,9 @@ function WeightSelector({ variants, selectedVariant, onChange, showBottleOptions
     variant.packageType === 'bottle' || (
       showBottleOptions && !variant.packageType && bottleSizes.includes(Number(variant.grams))
     )
-  const pouchVariants = variants.filter((variant) => !isBottleVariant(variant))
+  const pouchVariants = variants.filter((variant) =>
+    !isBottleVariant(variant) && !(showBottleOptions && Number(variant.grams) === 500)
+  )
   const bottleVariants = [...new Map(
     variants
       .filter(isBottleVariant)
