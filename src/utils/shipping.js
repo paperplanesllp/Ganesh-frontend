@@ -23,7 +23,22 @@ function normalizeState(value) {
 
 const southIndiaStateKeys = new Set(SOUTH_INDIA_STATES.map(normalizeState))
 
-export function calculateShippingCharge(state) {
+export function calculateTotalCartWeightKg(items = []) {
+  const totalWeightGrams = items.reduce((total, item) => {
+    const grams = Number(item?.grams ?? item?.variant?.grams)
+    const quantity = Number(item?.quantity)
+    if (!Number.isFinite(grams) || grams <= 0 || !Number.isInteger(quantity) || quantity <= 0) return total
+    return total + grams * quantity
+  }, 0)
+
+  return totalWeightGrams / 1000
+}
+
+export function calculateShippingCharge(state, totalWeightKg) {
   if (!normalizeState(state)) return 0
-  return southIndiaStateKeys.has(normalizeState(state)) ? 60 : 90
+  const weight = Number(totalWeightKg)
+  if (!Number.isFinite(weight) || weight <= 0) return 0
+  const chargeableKg = Math.ceil(weight)
+  const ratePerKg = southIndiaStateKeys.has(normalizeState(state)) ? 60 : 90
+  return chargeableKg * ratePerKg
 }

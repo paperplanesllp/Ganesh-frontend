@@ -77,8 +77,8 @@ Incorrect or incomplete address information
 Events beyond our reasonable control
 Customers are responsible for providing an accurate delivery address and contact number.
 Standard shipping charges are applied to all the products with respect to geography. Currently the standard pricing goes as follows:
-South India: ₹60 per order
-North India: ₹90 per order
+South India: ₹60 per started kilogram (minimum ₹60)
+North India: ₹90 per started kilogram (minimum ₹90)
 South India currently includes Kerala, TamilNadu, Karnataka, Andhra Pradesh, Telangana and Puducherry. The applicable shipping charge is calculated from the delivery State or Union Territory and is displayed during checkout before you make the payment.
 Any delivery estimate shown at checkout or communicated after dispatch is an estimate, not a guarantee. Actual delivery may vary based on location, serviceability, and external conditions.
 The general time-frame in which the ordered product(s) will be delivered is within 5 to 10 days from the date of delivery.

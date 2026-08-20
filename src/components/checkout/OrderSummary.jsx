@@ -1,11 +1,12 @@
 import { useCart } from '../../context/CartContext'
 import { formatCurrency } from '../../utils/currency'
 import CartSummary from '../cart/CartSummary'
-import { calculateShippingCharge } from '../../utils/shipping'
+import { calculateShippingCharge, calculateTotalCartWeightKg } from '../../utils/shipping'
 
 function OrderSummary({ deliveryState }) {
   const { cartItems, cartCount, subtotal } = useCart()
-  const deliveryCharge = calculateShippingCharge(deliveryState)
+  const totalWeightKg = calculateTotalCartWeightKg(cartItems)
+  const deliveryCharge = calculateShippingCharge(deliveryState, totalWeightKg)
   const total = subtotal + deliveryCharge
 
   return (
@@ -33,7 +34,7 @@ function OrderSummary({ deliveryState }) {
           ))}
         </div>
         <p className="mt-4 rounded-xl bg-brand-light p-3 text-sm font-semibold text-brand">
-          Shipping to {deliveryState}: {formatCurrency(deliveryCharge)} per order
+          Shipping to {deliveryState}: {formatCurrency(deliveryCharge)} for {Math.ceil(totalWeightKg)} kg chargeable weight
         </p>
       </div>
     </div>
