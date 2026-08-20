@@ -1,21 +1,169 @@
-import PolicyContact from '../components/common/PolicyContact'
-import PolicyPageLayout from '../components/common/PolicyPageLayout'
+import { useEffect } from 'react'
 
-const sections = [
-  { title: 'Overview', content: <p>This policy explains when Ganesh Pickles may provide a refund for packaged food products. Each request is reviewed fairly based on the order records, product condition, evidence supplied, food-safety considerations, and applicable Indian consumer law.</p> },
-  { title: 'Refund Eligibility', content: <p>A refund or other appropriate resolution may be available when a product arrives damaged, leaking, tampered with, defective or spoiled, when the wrong product is delivered, when an item is missing, or when an accepted order cannot be fulfilled.</p> },
-  { title: 'Damaged, Defective, or Incorrect Products', content: <p>Do not consume a product that appears unsafe or tampered with. Keep the product, label, original packaging, and delivery packaging while we review the issue. Depending on verification and availability, we may offer a replacement, refund, or another remedy required by law.</p> },
-  { title: 'Missing Products', content: <p>If an item shown in your order confirmation is missing from the parcel, contact us with the order number and details of the missing item. We will compare the request with our order and fulfilment records before providing an appropriate resolution.</p> },
-  { title: 'Failed or Cancelled Payments', content: <p>If payment is deducted but the order is not successfully created, or if we cancel a paid order we cannot fulfil, the transaction will be checked against our payment-provider records. Any amount confirmed as received and eligible for reversal will be refunded through the original payment method.</p> },
-  { title: 'Evidence and How to Make a Request', content: <div><p>Contact us with your order number, contact details, a clear description of the issue, and clear photographs or video of the product, seal, label, outer packaging, and shipping label where reasonably relevant.</p><p className="mt-3 font-semibold text-brand-dark">TODO: Confirm the period within which customers must report a refund issue after delivery.</p></div> },
-  { title: 'Refund Review and Processing', content: <div><p>We may ask reasonable follow-up questions and verify the order, payment, packaging, delivery, and product condition. Once approved, we will initiate the refund and notify you. Banks and payment providers may require additional time to credit the amount.</p><p className="mt-3 font-semibold text-brand-dark">TODO: Confirm the business refund-processing timeframe.</p></div> },
-  { title: 'Refund Method', content: <p>Approved refunds will ordinarily be issued to the original payment method. If that is not technically possible, we will contact you about a lawful alternative. We will never ask for a UPI PIN, CVV, card PIN, password, or one-time password to process a refund.</p> },
-  { title: 'Non-Refundable Situations', content: <p>Refunds are generally unavailable for change of mind, taste preference, natural variations that do not affect safety or quality, incorrect storage after delivery, damage caused after delivery, or products that have been substantially consumed, altered, or discarded before reasonable verification. This does not limit remedies that cannot be excluded under applicable law.</p> },
-  { title: 'Opened or Consumed Food Products', content: <p>Because our products are food items, opened or consumed products cannot ordinarily be refunded unless the opening was reasonably necessary to discover a verified defect, spoilage, contamination, or other qualifying issue. Please stop using the product and contact us promptly if a problem is discovered.</p> },
-  { title: 'Fraudulent or Abusive Claims', content: <p>We may reject claims supported by false information, manipulated evidence, repeated abuse, refusal to provide reasonable verification, or circumstances inconsistent with order records. We may restrict accounts or take lawful action where fraud is suspected.</p> },
-  { title: 'Contact Information', content: <PolicyContact subject="a refund or payment issue" /> },
-]
+const policyText = `At Ganesh Pickles, we take care in preparing, packing and dispatching our products.
+Because our products are food items, including pickles, vathals and spice powders, we follow a specific policy for cancellations, returns, refunds and replacements.
+This policy applies to purchases made through [www.ganeshpickles.com](http://www.ganeshpickles.com/).
+1. Cancellation of Orders
+1.1 Cancellation Before Dispatch
+You may request cancellation of your order before it has been dispatched.
+To request cancellation, please contact us as soon as possible with:
+Order number
+Name used for the order
+Registered mobile number or email address.
+If the order has not yet been dispatched, we will make reasonable efforts to cancel it.
+If payment has already been received, an eligible refund will be initiated through the original payment method or another appropriate method, as applicable.
+1.2 Cancellation After Dispatch
+Once an order has been dispatched, cancellation will not be possible.
+However, this does not affect your rights in relation to products that are damaged, defective, incorrectly supplied, missing or otherwise subject to a legitimate complaint under applicable law.
+2. Returns of Food Products
+For hygiene and food-safety reasons, we generally do not accept returns of food products solely because:
+You have changed your mind
+You ordered the wrong product
+You do not like the taste or flavour
+You no longer require the product
+You selected the wrong quantity
+Opened, used or partially consumed food products are generally not eligible for return solely for these reasons.
+This restriction does not apply to legitimate complaints concerning damaged, defective, incorrectly supplied or potentially unsafe products.
+3. Damaged or Leaking Products
+If your order arrives with a broken, leaking, crushed or otherwise materially damaged product, please contact us as soon as reasonably possible after delivery.
+Please provide:
+Order number
+Photographs of the outer package
+Photographs of the damaged product
+Photographs of the product label
+Batch/lot number, where visible
+A brief description of the damage
+Where reasonably possible, please retain the packaging and affected product until the complaint has been reviewed.
+Depending on the circumstances, we may provide:
+A replacement product
+A refund
+A partial refund 
+Another appropriate remedy.
+4. Incorrect Product
+If you receive a product that is different from the product ordered, please contact us promptly.
+For example, if you ordered one variety of pickle but received another variety, we may arrange an appropriate replacement or refund after verifying the order.
+
+
+5. Missing Products
+If one or more products are missing from your order, please contact us with your order number and details of the missing item.
+We will investigate the order and packing/delivery information and, where appropriate, arrange:
+Shipment of the missing product; or
+A refund for the missing product.
+6. Food-Quality or Food-Safety Concerns
+If you believe that a product:
+Appears spoiled
+Has an unusual smell or appearance
+Appears contaminated
+Has a damaged or compromised seal
+Has another significant quality concern or
+May be unsafe to consume,
+please do not consume the product.
+Contact us as soon as possible and provide:
+Order number
+Product name
+Batch/lot number
+Photographs of the product and packaging
+Description of the concern
+Date of delivery
+We may request additional information to investigate the complaint.
+Depending on the nature of the issue, we may arrange a replacement, refund or other appropriate remedy.
+Where appropriate, we may also investigate the relevant production batch to identify and address any broader quality issue.
+
+
+7. Products Past Their Best-Before/Use-By Date
+If you receive a product that appears to have been supplied past its applicable best-before/use-by date, please do not consume it.
+Contact us promptly with photographs showing:
+Product name
+Date information
+Batch/lot number
+Order number
+We will investigate the matter and provide an appropriate remedy where applicable.
+8. Refunds
+Where a refund is approved, we will generally initiate the refund through the original payment method used for the order, where technically possible.
+The approved refunds will be credited within 10 days from the date of initiation in the original mode of payment
+We are not responsible for delays caused solely by the customer's bank or payment provider after the refund has been initiated by us.
+9. Return for replacement
+Return-related issues should be reported within 1 day of receival. Opened, used or partially consumed food products, as said earlier, are generally not eligible for return solely for these reasons.
+
+After verification, an eligible issue may be resolved through replacement of the affected item, refund through the original payment method when applicable, or another remedy appropriate under applicable law.
+
+The replacement orders will be delivered within 5 business days, after the returned item reaches the warehouse.
+
+Do not send a product back without instructions from us, because the food safety requirements and resolutions may vary by issue.
+
+Note that the replacement depends on the product availability and serviceability.
+10. Shipping Charges
+Where a refund or replacement is approved because the product was incorrectly supplied, materially damaged in transit, missing, defective or subject to another legitimate product-related complaint, Ganesh Pickles will determine the appropriate treatment of shipping charges based on the circumstances.
+For customer-initiated cancellations or non-defect-related requests, shipping charges may not be refundable where the order has already been processed or dispatched.
+12. Order Refusal or Failed Delivery
+If an order cannot be delivered because the customer has provided an incorrect or incomplete address, is repeatedly unavailable, or otherwise prevents delivery, we may contact the customer to arrange re-delivery.
+Additional delivery charges may apply where re-delivery is requested because of incorrect information or customer-related delivery failure.
+If an order is returned to us by the courier, we will contact the customer where reasonably possible to determine whether re-shipment or cancellation is appropriate. Shipping charges will not be refundable on that occasion. 
+13. How to Contact Us
+For cancellation, refund, replacement or product-quality complaints, please contact:
+Ganesh Pickles / Sree Ganesh Enterprises
+24/388, Double Street, Nurani,
+Palakkad, Kerala – 678004, India
+Email: nuraniganeshpickles@yahoo.com 
+Phone: +91 94479 60265 
+Please include your order number whenever contacting us regarding an order.
+14. Customer Cooperation
+We may request photographs, product labels, batch/lot information, packaging details or other reasonable information to investigate a complaint.
+Providing this information helps us identify the product and determine the appropriate remedy.
+We will not require a customer to return or dispose of a potentially unsafe food product in a manner that would create a health or safety risk.
+15. Consumer Rights
+Nothing in this Refund & Cancellation Policy is intended to remove or restrict any rights or remedies available to consumers under applicable Indian law.
+Where applicable law provides a consumer with a right to a refund, replacement, repair or other remedy, those rights will continue to apply.
+16. Changes to this Policy
+We may update this Refund, Return & Cancellation Policy from time to time.
+The revised version will be published on the Website with an updated "Last Updated" date.`
+
+const markdownLinkPattern = /\[([^\]]+)\]\(([^)]+)\)/
+
+function PolicyLine({ line }) {
+  const link = line.match(markdownLinkPattern)
+
+  if (link) {
+    const [match, label, href] = link
+    const [before, after] = line.split(match)
+    return <p>{before}<a className="underline" href={href}>{label}</a>{after}</p>
+  }
+
+  return <p>{line || '\u00a0'}</p>
+}
 
 export default function RefundPolicyPage() {
-  return <PolicyPageLayout title="Refund Policy" sections={sections} />
+  useEffect(() => {
+    const previousTitle = document.title
+    document.title = 'Refund, Return & Cancellation Policy | Ganesh Pickles'
+    return () => { document.title = previousTitle }
+  }, [])
+
+  return (
+    <div className="bg-white">
+      <header className="border-b border-gray-200">
+        <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+          <h1 className="mt-3 font-[Georgia,serif] text-3xl font-bold leading-tight text-brand-dark sm:text-4xl md:text-5xl">Refund, Return &amp; Cancellation Policy</h1>
+          <p className="mt-4 text-sm text-gray-600"><span className="font-semibold text-gray-800">Last Updated:</span> 13 August 2026</p>
+        </div>
+      </header>
+
+      <article className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
+        <div className="space-y-3 text-[15px] leading-7 text-gray-700 sm:text-base sm:leading-8">
+          {policyText.split('\n').map((line, index) => {
+            const isSection = /^\d+\. /.test(line)
+            const isSubsection = /^\d+\.\d+ /.test(line)
+
+            if (isSubsection) {
+              return <h3 className="pt-3 font-[Georgia,serif] text-lg font-bold text-brand-dark" key={`${index}-${line}`}>{line}</h3>
+            }
+
+            return isSection
+              ? <h2 className="pt-6 font-[Georgia,serif] text-xl font-bold leading-snug text-brand-dark sm:text-2xl" key={`${index}-${line}`}>{line}</h2>
+              : <PolicyLine key={`${index}-${line}`} line={line} />
+          })}
+        </div>
+      </article>
+    </div>
+  )
 }

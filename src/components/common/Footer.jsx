@@ -39,8 +39,6 @@ function Footer() {
             <Link className="transition duration-200 text-black hover:text-black" to="/terms-and-conditions">Terms &amp; Conditions</Link>
             <Link className="transition duration-200 text-black hover:text-black" to="/privacy-policy">Privacy Policy</Link>
             <Link className="transition duration-200 text-black hover:text-black" to="/refund-policy">Refund Policy</Link>
-            <Link className="transition duration-200 text-black hover:text-black" to="/return-policy">Return Policy</Link>
-            <Link className="transition duration-200 text-black hover:text-black" to="/shipping-policy">Shipping Policy</Link>
           </nav>
         </section>
 

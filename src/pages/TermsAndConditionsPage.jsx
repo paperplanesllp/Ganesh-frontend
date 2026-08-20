@@ -1,242 +1,182 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
 
-const sections = [
-  {
-    title: '1. Introduction',
-    content: (
-      <p>
-        Welcome to Ganesh Pickles. These Terms &amp; Conditions govern your access to and use of this website and your purchase of our packaged food products, including pickles, spice powders, vathals, and related products. Please read them carefully before using the website or placing an order.
-      </p>
-    ),
-  },
-  {
-    title: '2. Acceptance of Terms',
-    content: (
-      <p>
-        By accessing the website, creating an account, or placing an order, you agree to these Terms &amp; Conditions and the policies referred to on the website. If you do not agree, please do not use the website or place an order.
-      </p>
-    ),
-  },
-  {
-    title: '3. Eligibility to Use the Website',
-    content: (
-      <p>
-        You must be legally capable of entering into a binding contract under applicable Indian law to place an order. If you use the website on behalf of another person or organisation, you confirm that you have authority to bind them to these terms. Minors may use the website only under the supervision of a parent or legal guardian.
-      </p>
-    ),
-  },
-  {
-    title: '4. Products and Product Information',
-    content: (
-      <p>
-        We aim to describe our products, ingredients, pack sizes, images, and other details accurately. Product images are illustrative, and the actual colour, texture, appearance, packaging, or label may vary slightly. Please review the product label and information supplied with the product before consumption, particularly where you have allergies, intolerances, dietary requirements, or medical concerns.
-      </p>
-    ),
-  },
-  {
-    title: '5. Pricing and Availability',
-    content: (
-      <p>
-        Prices are displayed in Indian Rupees and will be applied as shown at checkout, together with any applicable taxes, delivery charges, or other disclosed fees. Prices, offers, and availability may change without prior notice. Adding a product to your cart does not reserve it or guarantee its price or availability.
-      </p>
-    ),
-  },
-  {
-    title: '6. Orders and Order Acceptance',
-    content: (
-      <p>
-        Your order is an offer to purchase the selected products. An automated acknowledgement does not by itself mean that the order has been accepted. We may accept, limit, or decline an order where a product is unavailable, information or pricing is incorrect, payment is not authorised, delivery is not serviceable, the order appears fraudulent, or applicable law requires it. If payment has been received for an order we cannot fulfil, the appropriate refund will be initiated through the original payment method.
-      </p>
-    ),
-  },
-  {
-    title: '7. Payments',
-    content: (
-      <p>
-        You agree to provide complete and accurate billing and payment information. Payments may be processed through the payment options and third-party gateways shown at checkout. An order may remain unconfirmed until payment is successfully authorised or received. Ganesh Pickles does not directly control a payment provider&apos;s systems, security checks, bank processing, or service availability.
-      </p>
-    ),
-  },
-  {
-    title: '8. Order Cancellation',
-    content: (
-      <p>
-        To request cancellation, contact us as soon as possible with your order details. A request is not guaranteed and will depend on the order&apos;s processing or dispatch status and the nature of the products. We may cancel an order for the reasons described in these terms. Any eligible payment reversal or refund will be handled through the original payment method, subject to payment-provider processing.
-      </p>
-    ),
-  },
-  {
-    title: '9. Shipping and Delivery',
-    content: (
-      <p>
-        Delivery availability, charges, and any estimated delivery information will be communicated during checkout or after order confirmation where applicable. Estimates are not guarantees and may be affected by courier operations, weather, public holidays, serviceability, incorrect address details, or other circumstances beyond reasonable control. You are responsible for providing a complete address and an available contact number and for ensuring that someone can receive the order.
-      </p>
-    ),
-  },
-  {
-    title: '10. Returns and Refunds',
-    content: (
-      <p>
-        Requests relating to a damaged, defective, incorrect, tampered, or missing product will be assessed based on the circumstances and applicable law. Please contact us promptly with the order number, a description of the issue, and clear photographs of the product, packaging, and label where relevant. Eligibility for a replacement, return, or refund depends on verification of the claim, the product&apos;s condition, and its food-safety requirements. Any approved refund will be sent through the original payment method unless otherwise required by law.
-      </p>
-    ),
-  },
-  {
-    title: '11. Food Product / Perishable Product Conditions',
-    content: (
-      <div className="space-y-3">
-        <p>
-          Because food products are consumable and may be perishable or sensitive to storage and handling, products that have been opened, used, consumed, altered, or stored improperly ordinarily cannot be accepted for return, except where required by applicable law or where we verify a qualifying product issue.
-        </p>
-        <p>
-          Follow all storage, refrigeration-after-opening, best-before, allergen, and usage instructions on the packaging. Do not consume a product if its seal is broken on arrival, the packaging appears tampered with, or the product appears unsafe. Natural variations may occur in traditionally prepared food products and do not necessarily indicate a defect.
-        </p>
-      </div>
-    ),
-  },
-  {
-    title: '12. User Accounts, if applicable',
-    content: (
-      <p>
-        Some website features may require an account. You are responsible for keeping your login credentials confidential, providing accurate account information, and notifying us of suspected unauthorised use. We may restrict or suspend an account where reasonably necessary to protect customers, the website, or comply with law.
-      </p>
-    ),
-  },
-  {
-    title: '13. Accuracy of Information',
-    content: (
-      <p>
-        We make reasonable efforts to keep website content accurate and current, but typographical errors, omissions, or outdated information may occasionally occur. We may correct such information and update or cancel affected orders where appropriate. Nothing in this section limits rights that cannot lawfully be excluded.
-      </p>
-    ),
-  },
-  {
-    title: '14. Intellectual Property',
-    content: (
-      <p>
-        The website and its branding, logos, product photographs, text, graphics, layout, and other content are owned by or licensed to Ganesh Pickles and are protected by applicable intellectual-property laws. You may use the website only for personal, non-commercial shopping and information purposes. You may not copy, reproduce, modify, distribute, or commercially exploit its content without prior written permission.
-      </p>
-    ),
-  },
-  {
-    title: '15. Prohibited Uses',
-    content: (
-      <p>
-        You must not misuse the website; attempt unauthorised access; interfere with its operation or security; introduce malicious code; scrape or harvest data without permission; impersonate another person; submit false, misleading, or fraudulent information; violate another person&apos;s rights; or use the website for any unlawful purpose.
-      </p>
-    ),
-  },
-  {
-    title: '16. Limitation of Liability',
-    content: (
-      <p>
-        To the extent permitted by applicable law, Ganesh Pickles will not be liable for indirect, incidental, special, or consequential loss arising from use of the website, third-party services, delivery delays beyond reasonable control, or use or storage of products contrary to label instructions. Nothing in these terms excludes or limits liability, statutory warranties, or consumer rights that cannot be excluded or limited under Indian law.
-      </p>
-    ),
-  },
-  {
-    title: '17. Third-Party Services / Payment Gateways',
-    content: (
-      <p>
-        The website may use third-party services such as payment gateways, logistics providers, communications platforms, or external links. Their services may be governed by their own terms and privacy practices. We are not responsible for third-party websites or systems outside our reasonable control, but this does not affect any responsibility we have under applicable law for your order.
-      </p>
-    ),
-  },
-  {
-    title: '18. Privacy',
-    content: (
-      <p>
-        We process personal information for purposes such as account management, order fulfilment, payment support, delivery, customer service, fraud prevention, and legal compliance. Please review the privacy information made available on the website for further details. By using the website, you acknowledge that information required to complete your transaction may be shared with relevant service providers, subject to applicable law.
-      </p>
-    ),
-  },
-  {
-    title: '19. Changes to Terms',
-    content: (
-      <p>
-        We may update these Terms &amp; Conditions to reflect changes in our services, business practices, technology, or legal requirements. The revised terms will be posted on this page with an updated date. Changes apply from publication unless stated otherwise and do not retrospectively reduce rights already accrued under applicable law.
-      </p>
-    ),
-  },
-  {
-    title: '20. Governing Law and Jurisdiction',
-    content: (
-      <p>
-        These Terms &amp; Conditions are governed by the applicable laws of India. Any dispute will be handled by the courts or consumer forums having jurisdiction under applicable law. You may also have rights and remedies under Indian consumer-protection law.
-      </p>
-    ),
-  },
-  {
-    title: '21. Contact Information',
-    content: (
-      <div className="space-y-2">
-        <p>For questions about these terms or assistance with an order, contact Ganesh Pickles:</p>
-        <address className="space-y-1 not-italic">
-          <p>Palakkad, Kerala, India</p>
-          <p>
-            Email:{' '}
-            <a className="font-semibold text-brand underline decoration-brand/30 underline-offset-4 hover:text-brand-dark" href="mailto:nuraniganeshpickles@yahoo.com">
-              nuraniganeshpickles@yahoo.com
-            </a>
-          </p>
-          <p>
-            Phone:{' '}
-            <a className="font-semibold text-brand underline decoration-brand/30 underline-offset-4 hover:text-brand-dark" href="tel:+919447960265">+91 94479 60265</a>
-            {', '}
-            <a className="font-semibold text-brand underline decoration-brand/30 underline-offset-4 hover:text-brand-dark" href="tel:+919872348112">+91 98723 48112</a>
-            {', or '}
-            <a className="font-semibold text-brand underline decoration-brand/30 underline-offset-4 hover:text-brand-dark" href="tel:04912528207">0491-2528207</a>
-          </p>
-        </address>
-        <p>
-          You may also use our <Link className="font-semibold text-brand underline decoration-brand/30 underline-offset-4 hover:text-brand-dark" to="/contact">contact page</Link>.
-        </p>
-      </div>
-    ),
-  },
-]
+const policyText = `Welcome to Ganesh Pickles.
+These Terms & Conditions ("Terms") govern your access to and use of [www.ganeshpickles.com](http://www.ganeshpickles.com/) ("Website") and the purchase of products offered through the Website.
+The Website is operated by Sree Ganesh Enterprises, having its address at 24/388, Double Street, Nurani, Palakkad, Kerala – 678004, India.
+By accessing the Website or placing an order, you agree to be bound by these Terms.
+If you do not agree with these Terms, please do not use the Website.
+1. About Ganesh Pickles
+Ganesh Pickles offers traditional food products including, among others:
+Pickles
+Vathals 
+Powders
+Other food products that may be introduced on the Website from time to time.
+Product availability may vary.
+2. Eligibility
+You must provide accurate and complete information when using the Website or placing an order.
+If you are placing an order on behalf of another person, you confirm that you are authorised to provide their information and arrange delivery to them.
+3. Product Information
+We make reasonable efforts to ensure that product descriptions, photographs, prices and other information displayed on the Website are accurate and up to date.
+However:
+Product photographs are intended for representation and actual packaging may vary
+Natural variations in colour, texture, appearance and flavour may occur between batches
+Product availability may change without notice
+Packaging may be updated from time to time
+The actual product label supplied with your order should be relied upon for applicable ingredient, nutritional, allergen, storage, batch and date information.
+For packaged food products, information such as ingredients, nutritional information, net quantity, batch/lot details, dates, manufacturer/packer information and applicable food declarations should be checked on the product packaging and applicable product page.
+4. Food Products and Consumption
+Our products are food products intended for human consumption.
+Customers should:
+Read the product label before consumption
+Check ingredients and allergen information where relevant
+Follow storage instructions
+Observe the applicable best-before/use-by information
+Use clean, dry utensils where recommended
+Store products according to the instructions provided on the packaging
+If you believe that a product is spoiled, contaminated, damaged or otherwise unsafe to consume, do not consume the product and contact us promptly with your order details and product information.
+5. Ingredients, Allergies and Dietary Requirements
+Our products may contain ingredients, spices, oils, nuts, seeds or other substances that may not be suitable for every individual.
+Customers with food allergies, intolerances, dietary restrictions or medical conditions should carefully review the product label and ingredient information before consumption.
+If you require clarification regarding ingredients or allergens, please contact us before placing an order.
+We do not provide medical or dietary advice.
 
-function TermsAndConditionsPage() {
+6. Product Claims
+Descriptions concerning taste, tradition, preparation, ingredients, storage or other characteristics are provided for product-information and marketing purposes.
+Customers should not interpret Website content as medical advice or as a guarantee that any product will provide a particular health or medical benefit.
+Any specific product claim will be subject to applicable food-safety and advertising requirements.
+7. Prices
+All product prices displayed on the Website are in Indian Rupees (INR), unless expressly stated otherwise.
+Prices may be changed at any time.
+Applicable taxes and shipping charges will be displayed at the relevant stage of purchase, where applicable.
+In the event of an obvious pricing or listing error, we reserve the right to correct the error and, where appropriate, cancel an affected order and refund amounts paid for that order.
+8. Orders
+When you place an order through the Website, you are making a request to purchase the selected products.
+An order confirmation may be sent to you after the order is received.
+An order may be cancelled or rejected in circumstances including:
+Product unavailability
+Pricing or listing errors
+Suspected fraudulent or unauthorised transactions
+Incorrect or incomplete customer information
+Delivery restrictions
+Circumstances beyond our reasonable control
+If we cancel an order after payment has been received, we will initiate an appropriate refund of the amount paid for the cancelled order.
+9. Payment
+Payments may be made using the payment methods made available on the Website.
+Payment transactions may be processed through third-party payment gateways or financial service providers.
+We do not control the independent systems of such providers and are not responsible for failures originating solely within their systems.
+Please check our refund policy for more information regarding the refunds or payments. 
+10. Shipping and Delivery
+Orders will be shipped to the delivery address provided by the customer.
+Estimated delivery timelines displayed on the Website are indicative and may vary depending on:
+Delivery location
+Courier availability
+Weather
+Public holidays
+Operational disruptions
+Incorrect or incomplete address information
+Events beyond our reasonable control
+Customers are responsible for providing an accurate delivery address and contact number.
+Standard shipping charges are applied to all the products with respect to geography. Currently the standard pricing goes as follows:
+South India: ₹60 per order
+North India: ₹90 per order
+South India currently includes Kerala, TamilNadu, Karnataka, Andhra Pradesh, Telangana and Puducherry. The applicable shipping charge is calculated from the delivery State or Union Territory and is displayed during checkout before you make the payment.
+Any delivery estimate shown at checkout or communicated after dispatch is an estimate, not a guarantee. Actual delivery may vary based on location, serviceability, and external conditions.
+The general time-frame in which the ordered product(s) will be delivered is within 5 to 10 days from the date of delivery.
+11. Delivery Inspection
+Customers are encouraged to inspect the package promptly upon delivery.
+If a package appears visibly damaged, broken, leaking or tampered with, please photograph the package before opening it and contact us as soon as reasonably possible.
+For food-quality complaints, customers should retain the product, packaging and batch/lot information where reasonably possible so that we can investigate the issue.
+Please refer to our Returns & refunds policy for more details.
+12. Returns, Refunds and Replacements
+Because our products are food products, opened or consumed products are generally not eligible for return merely because a customer has changed their mind or does not prefer the taste.
+However, this does not affect applicable consumer rights relating to products that are:
+Defective
+Damaged during delivery
+Incorrectly supplied
+Missing from an order
+Materially different from what was ordered
+Subject to a legitimate food-quality or safety concern.
+Please refer to our Refund Policy for the applicable process.
+13. Customer Responsibilities
+Customers agree to:
+Provide accurate order and contact information
+Use products according to the product label and storage instructions
+Not misuse the Website
+Not attempt to interfere with Website security or functionality
+Not use the Website for fraudulent, unlawful or unauthorised purposes
+
+
+14. Website Content and Intellectual Property
+All Website content, including text, photographs, graphics, logos, product images, branding, design elements, videos and other materials, is owned by or licensed to Ganesh Pickles or Sree Ganesh Enterprises unless otherwise stated.
+You may not reproduce, copy, modify, distribute, publish, sell or commercially exploit Website content without prior written permission.
+The Ganesh Pickles name, logo and related branding may not be used without permission.
+15. Customer Reviews and Content
+If the Website permits customers to submit reviews, photographs, comments or other content, you agree that:
+The content should be truthful and based on your genuine experience
+You will not submit unlawful, misleading, defamatory, abusive or fraudulent content
+You will not impersonate another person
+You will not submit malicious code or harmful material
+We reserve the right to remove or decline to publish content that violates these Terms or applicable law.
+16. Privacy
+Your use of the Website is also governed by our Privacy Policy, which explains how we collect and use personal information.
+17. Grievance Redressal
+If you have a complaint regarding an order, product, service or Website experience, please contact us first so that we can investigate and resolve the issue.
+
+Email: nuraniganeshpickles@yahoo.com 
+Phone: +91 94479 60265 
+Address: Sree Ganesh Enterprises, 24/388, Double Street, Nurani, Palakkad, Kerala – 678004, India
+We will endeavour to acknowledge and resolve complaints within the timelines applicable under law and our internal grievance process.
+18. Changes to these Terms
+We may update these Terms from time to time.
+The updated Terms will be posted on the Website with the revised "Last Updated" date.
+Your continued use of the Website after an updated version is published constitutes acceptance of the updated Terms, to the extent permitted by law.
+19. Contact Us
+For questions regarding these Terms, please contact:
+Sree Ganesh Enterprises / Ganesh Pickles
+24/388, Double Street, Nurani,
+Palakkad, Kerala – 678004, India
+Email: nuraniganeshpickles@yahoo.com 
+Phone: +91 94479 60265 `
+
+const markdownLinkPattern = /\[([^\]]+)\]\(([^)]+)\)/
+
+function PolicyLine({ line }) {
+  const link = line.match(markdownLinkPattern)
+
+  if (link) {
+    const [match, label, href] = link
+    const [before, after] = line.split(match)
+    return <p>{before}<a className="underline" href={href}>{label}</a>{after}</p>
+  }
+
+  return <p>{line || '\u00a0'}</p>
+}
+
+export default function TermsAndConditionsPage() {
   useEffect(() => {
     const previousTitle = document.title
     document.title = 'Terms & Conditions | Ganesh Pickles'
-
-    return () => {
-      document.title = previousTitle
-    }
+    return () => { document.title = previousTitle }
   }, [])
 
   return (
     <div className="bg-white">
       <header className="border-b border-gray-200">
         <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
-          <p className="text-sm font-bold uppercase tracking-wide text-brand">Legal</p>
-          <h1 className="mt-3 font-[Georgia,serif] text-3xl font-bold leading-tight text-brand-dark sm:text-4xl md:text-5xl">
-            Terms &amp; Conditions
-          </h1>
-          <p className="mt-4 text-sm text-gray-600">
-            <span className="font-semibold text-gray-800">Last Updated:</span> 13 August 2026
-          </p>
+          <h1 className="mt-3 font-[Georgia,serif] text-3xl font-bold leading-tight text-brand-dark sm:text-4xl md:text-5xl">Terms &amp; Conditions</h1>
+          <p className="mt-4 text-sm text-gray-600"><span className="font-semibold text-gray-800">Last Updated:</span> 13 July 2026</p>
         </div>
       </header>
 
       <article className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
-        <div className="space-y-9 sm:space-y-10">
-          {sections.map((section) => (
-            <section key={section.title}>
-              <h2 className="font-[Georgia,serif] text-xl font-bold leading-snug text-brand-dark sm:text-2xl">
-                {section.title}
-              </h2>
-              <div className="mt-3 text-[15px] leading-7 text-gray-700 sm:text-base sm:leading-8">
-                {section.content}
-              </div>
-            </section>
+        <div className="space-y-3 text-[15px] leading-7 text-gray-700 sm:text-base sm:leading-8">
+          {policyText.split('\n').map((line, index) => (
+            /^\d+\. /.test(line)
+              ? <h2 className="pt-6 font-[Georgia,serif] text-xl font-bold leading-snug text-brand-dark sm:text-2xl" key={`${index}-${line}`}>{line}</h2>
+              : <PolicyLine key={`${index}-${line}`} line={line} />
           ))}
         </div>
       </article>
     </div>
   )
 }
-
-export default TermsAndConditionsPage

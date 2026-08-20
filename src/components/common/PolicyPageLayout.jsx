@@ -14,7 +14,7 @@ function PolicyPageLayout({ title, sections }) {
     <div className="bg-white">
       <header className="border-b border-gray-200">
         <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
-          <p className="text-sm font-bold uppercase tracking-wide text-brand">Legal</p>
+          
           <h1 className="mt-3 font-[Georgia,serif] text-3xl font-bold leading-tight text-brand-dark sm:text-4xl md:text-5xl">
             {title}
           </h1>

@@ -27,8 +27,6 @@ import ProductsPage from './pages/ProductsPage'
 import PhonePeStatusPage from './pages/PhonePeStatusPage'
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
 import RefundPolicyPage from './pages/RefundPolicyPage'
-import ReturnPolicyPage from './pages/ReturnPolicyPage'
-import ShippingPolicyPage from './pages/ShippingPolicyPage'
 import SignupPage from './pages/SignupPage'
 import TermsAndConditionsPage from './pages/TermsAndConditionsPage'
 
@@ -157,8 +155,6 @@ function App() {
           <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="/refund-policy" element={<RefundPolicyPage />} />
-          <Route path="/return-policy" element={<ReturnPolicyPage />} />
-          <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
