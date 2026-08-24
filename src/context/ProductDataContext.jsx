@@ -64,7 +64,9 @@ function isPulyinchi(product) {
 }
 
 export function ProductDataProvider({ children }) {
-  const [products, setProducts] = useState(() => getCurrentProducts())
+  // Never seed the live storefront from the local preview catalogue. Doing so
+  // can expose products which the API has correctly hidden by category.
+  const [products, setProducts] = useState(() => USE_MOCK_DATA ? getCurrentProducts() : [])
   const [categoryVisibility, setCategoryVisibility] = useState({ Powders: true, Vathals: true })
 
   const refreshProducts = useCallback(() => {
@@ -106,7 +108,7 @@ export function ProductDataProvider({ children }) {
         setCategoryVisibility(categories.reduce((visibility, category) => ({ ...visibility, [category.name]: category.isVisible }), {}))
       })
       .catch((error) => {
-        if (error?.name !== 'AbortError') setProducts(getCurrentProducts())
+        if (error?.name !== 'AbortError') setProducts([])
       })
 
     return () => controller.abort()
