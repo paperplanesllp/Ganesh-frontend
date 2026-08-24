@@ -9,7 +9,7 @@ import AdminTable from '../../components/admin/AdminTable'
 import ConfirmationModal from '../../components/admin/ConfirmationModal'
 import { useCart } from '../../context/CartContext'
 import { useAuth } from '../../context/AuthContext'
-import { deactivateAdminProduct, getAdminProducts, updateAdminProductStatus } from '../../services/adminProductService'
+import { deactivateAdminProduct, getAdminCategoryVisibility, getAdminProducts, updateAdminCategoryVisibility, updateAdminProductStatus } from '../../services/adminProductService'
 import { categoryOptions } from '../../utils/adminProductFormHelpers'
 
 const sortOptions = [
@@ -34,6 +34,8 @@ function AdminProductsPage() {
   const [confirmProduct, setConfirmProduct] = useState(null)
   const [isConfirming, setIsConfirming] = useState(false)
   const [retryKey, setRetryKey] = useState(0)
+  const [categories, setCategories] = useState([])
+  const [savingCategory, setSavingCategory] = useState('')
 
   const filters = {
     page: Number(searchParams.get('page') || 1),
@@ -69,6 +71,10 @@ function AdminProductsPage() {
   useEffect(() => {
     loadProducts()
   }, [loadProducts, retryKey])
+
+  useEffect(() => {
+    getAdminCategoryVisibility(auth).then(setCategories).catch(() => setCategories([]))
+  }, [auth])
 
   const updateParam = (name, value) => {
     const next = new URLSearchParams(searchParams)
@@ -120,6 +126,19 @@ function AdminProductsPage() {
     }
   }
 
+  const handleCategoryVisibility = async (category) => {
+    setSavingCategory(category.name)
+    try {
+      const updated = await updateAdminCategoryVisibility(category.name, !category.isVisible, auth)
+      setCategories((current) => current.map((item) => item.name === updated.name ? updated : item))
+      showToast(`${updated.name} products are now ${updated.isVisible ? 'visible' : 'hidden'} in the store.`, 'success')
+    } catch {
+      showToast('Category visibility could not be updated.', 'error')
+    } finally {
+      setSavingCategory('')
+    }
+  }
+
   return (
     <div ref={headingRef}>
       <AdminPageHeader
@@ -131,6 +150,27 @@ function AdminProductsPage() {
           </div>
         }
       />
+      {categories.length > 0 && (
+        <section className="mb-5 rounded-xl border border-gray-200 bg-white p-4" aria-labelledby="category-visibility-heading">
+          <div className="mb-3">
+            <h2 id="category-visibility-heading" className="text-base font-semibold text-gray-900">Store category visibility</h2>
+            <p className="mt-1 text-sm text-gray-600">Hidden categories remain fully available here in admin, but their products are not shown to customers.</p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {categories.map((category) => (
+              <div key={category.name} className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 p-3">
+                <div>
+                  <p className="font-medium text-gray-900">{category.name}</p>
+                  <p className={`text-xs font-medium ${category.isVisible ? 'text-green-700' : 'text-gray-600'}`}>{category.isVisible ? 'Visible to customers' : 'Hidden from customers'}</p>
+                </div>
+                <button type="button" className="min-h-10 rounded-lg border border-gray-200 px-4 text-sm font-medium text-brand hover:bg-brand-light disabled:cursor-not-allowed disabled:opacity-50" disabled={savingCategory === category.name} onClick={() => handleCategoryVisibility(category)}>
+                  {savingCategory === category.name ? 'Saving...' : category.isVisible ? 'Hide' : 'Show'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
       <div className="mb-5 grid gap-3 rounded-xl border border-gray-200 bg-white p-4 lg:grid-cols-[1fr_150px_160px_180px_auto]">
         <label className="grid gap-1 text-xs font-medium text-gray-600">
           Search products

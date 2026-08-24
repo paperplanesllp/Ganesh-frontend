@@ -108,3 +108,17 @@ export async function deactivateAdminProduct(id, auth = {}) {
     auth,
   )
 }
+
+export async function getAdminCategoryVisibility(auth = {}) {
+  const data = await authenticatedApiRequest('/admin/categories', {}, auth)
+  return data.categories || []
+}
+
+export async function updateAdminCategoryVisibility(name, isVisible, auth = {}) {
+  const data = await authenticatedApiRequest(
+    `/admin/categories/${encodeURIComponent(name)}`,
+    { method: 'PATCH', body: { isVisible } },
+    auth,
+  )
+  return data.category
+}

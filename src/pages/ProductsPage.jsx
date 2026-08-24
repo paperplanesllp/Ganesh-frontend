@@ -31,10 +31,11 @@ function ProductsPage() {
   const [page, setPage] = useState(1)
   const [searchParams] = useSearchParams()
   const gridHeadingRef = useRef(null)
-  const { activeProducts } = useProductData()
+  const { activeProducts, categoryVisibility } = useProductData()
   const requestedCategory = searchParams.get('category')
   const selectedCategory = CATEGORY_CONTENT[requestedCategory] ? requestedCategory : 'Pickles'
   const categoryContent = CATEGORY_CONTENT[selectedCategory]
+  const isCategoryVisible = categoryVisibility[selectedCategory] !== false
 
   const sortedProducts = useMemo(
     () => sortProducts(
@@ -84,8 +85,14 @@ function ProductsPage() {
                 {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
               </p>
             </div>
-            {products.length > 0 && <ProductGrid products={products} />}
-            {products.length === 0 && (
+            {isCategoryVisible && products.length > 0 && <ProductGrid products={products} />}
+            {!isCategoryVisible && (
+              <EmptyState
+                title="Products in this category are currently unavailable."
+                message="Please check back later or explore our other products."
+              />
+            )}
+            {isCategoryVisible && products.length === 0 && (
               <EmptyState
                 title={categoryContent.emptyTitle}
                 message={`New ${selectedCategory.toLowerCase()} will appear here once they are added to the catalog.`}

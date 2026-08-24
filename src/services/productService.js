@@ -71,6 +71,11 @@ export async function getProducts(queryString = '', signal) {
   return normalizeProductList(data)
 }
 
+export async function getCategoryVisibility(options = {}) {
+  const data = await requestProducts('/products/categories', options)
+  return data.categories || []
+}
+
 export async function getFeaturedProducts(params = {}, options = {}) {
   const data = await requestProducts(`/products/featured${buildQuery(params)}`, options)
   return normalizeProductList(data)

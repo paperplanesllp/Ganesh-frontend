@@ -7,7 +7,7 @@ import {
   saveMockProducts,
 } from '../utils/localProductCatalog'
 import { USE_MOCK_DATA } from '../config/appConfig'
-import { getProducts } from '../services/productService'
+import { getCategoryVisibility, getProducts } from '../services/productService'
 
 const ProductDataContext = createContext(null)
 
@@ -65,6 +65,7 @@ function isPulyinchi(product) {
 
 export function ProductDataProvider({ children }) {
   const [products, setProducts] = useState(() => getCurrentProducts())
+  const [categoryVisibility, setCategoryVisibility] = useState({ Powders: true, Vathals: true })
 
   const refreshProducts = useCallback(() => {
     if (!USE_MOCK_DATA) return
@@ -99,10 +100,10 @@ export function ProductDataProvider({ children }) {
 
     const controller = new AbortController()
 
-    getProducts({ limit: 50 }, controller.signal)
-      .then((data) => {
-        const apiProducts = data.products || []
-        setProducts(apiProducts.length > 0 ? apiProducts : getCurrentProducts())
+    Promise.all([getProducts({ limit: 50 }, controller.signal), getCategoryVisibility({ signal: controller.signal })])
+      .then(([data, categories]) => {
+        setProducts(data.products || [])
+        setCategoryVisibility(categories.reduce((visibility, category) => ({ ...visibility, [category.name]: category.isVisible }), {}))
       })
       .catch((error) => {
         if (error?.name !== 'AbortError') setProducts(getCurrentProducts())
@@ -180,12 +181,13 @@ export function ProductDataProvider({ children }) {
       return {
         products: categorizedProducts,
         activeProducts: categorizedProducts.filter((product) => product.isActive !== false),
+        categoryVisibility,
         refreshProducts,
         saveProducts,
         resetProducts,
       }
     },
-    [products, refreshProducts, resetProducts, saveProducts],
+    [categoryVisibility, products, refreshProducts, resetProducts, saveProducts],
   )
 
   return <ProductDataContext.Provider value={value}>{children}</ProductDataContext.Provider>
