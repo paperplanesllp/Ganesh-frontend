@@ -62,6 +62,7 @@ function normalizeStoredItem(item) {
     originalPrice: storedVariant.originalPrice ?? item.originalPrice ?? null,
     quantity: safeQuantity,
     stock: safeStock,
+    freeShipping: item.freeShipping === true,
     deliveryCharge: Math.max(0, Number(item.deliveryCharge) || 0),
   }
 }
@@ -140,6 +141,7 @@ export function CartProvider({ children }) {
                   ? Math.max(0, Number(product.delivery.charge) || 0)
                   : 0,
                 stock,
+                freeShipping: product.freeShipping === true,
               }
             : item,
         )
@@ -164,6 +166,7 @@ export function CartProvider({ children }) {
             : 0,
           quantity: Math.min(requestedQuantity, stock),
           stock,
+          freeShipping: product.freeShipping === true,
         },
       ]
     })

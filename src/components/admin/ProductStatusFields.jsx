@@ -1,5 +1,6 @@
 const fields = [
   ['isActive', 'Show product in store', 'Customers can see and purchase this product.'],
+  ['freeShipping', 'Free shipping', 'Waive shipping for this product when it is ordered alone.'],
   ['featured', 'Featured product', 'Show in featured product sections.'],
   ['bestseller', 'Bestseller', 'Show in bestseller sections.'],
   ['newArrival', 'New arrival', 'Show in new-arrival sections.'],

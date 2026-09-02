@@ -32,6 +32,7 @@ export function createEmptyVariant() {
     stock: '0',
     sku: '',
     isActive: true,
+    freeShipping: false,
   }
 }
 
@@ -104,6 +105,7 @@ export function mapProductToFormState(product) {
     bestseller: Boolean(product.bestseller),
     newArrival: Boolean(product.newArrival),
     isActive: product.isActive !== false,
+    freeShipping: Boolean(product.freeShipping),
     updateSlug: false,
     variants: product.variants?.length
       ? product.variants.map((variant) => ({
@@ -167,6 +169,7 @@ export function buildProductPayload(formState, { isEdit = false } = {}) {
     bestseller: Boolean(formState.bestseller),
     newArrival: Boolean(formState.newArrival),
     isActive: Boolean(formState.isActive),
+    freeShipping: Boolean(formState.freeShipping),
     variants: formState.variants.map((variant) => {
       const nextVariant = {
         label: variant.label.trim(),

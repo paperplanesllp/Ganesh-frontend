@@ -5,7 +5,7 @@ import { calculateShippingCharge, calculateTotalCartWeightKg } from '../../utils
 
 function OrderSummary({ deliveryState }) {
   const { cartItems, cartCount, subtotal } = useCart()
-  const totalWeightKg = calculateTotalCartWeightKg(cartItems)
+  const totalWeightKg = calculateTotalCartWeightKg(cartItems.filter((item) => !item.freeShipping))
   const deliveryCharge = calculateShippingCharge(deliveryState, totalWeightKg)
   const total = subtotal + deliveryCharge
 
@@ -34,7 +34,9 @@ function OrderSummary({ deliveryState }) {
           ))}
         </div>
         <p className="mt-4 rounded-xl bg-brand-light p-3 text-sm font-semibold text-brand">
-          Shipping to {deliveryState}: {formatCurrency(deliveryCharge)} for {Math.ceil(totalWeightKg)} kg chargeable weight
+          {deliveryCharge === 0
+            ? 'Free shipping applied to this order.'
+            : `Shipping to ${deliveryState}: ${formatCurrency(deliveryCharge)} for ${Math.ceil(totalWeightKg)} kg chargeable weight`}
         </p>
       </div>
     </div>
