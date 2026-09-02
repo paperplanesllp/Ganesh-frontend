@@ -18,21 +18,50 @@ const AUTH_SESSION_HINT_KEY = 'ganesh-pickles-auth-session'
 const FRONTEND_PREVIEW_AUTH_MESSAGE =
   'Customer accounts are temporarily unavailable. Please try again later.'
 
-function hasStoredAuthSessionHint() {
+function readStoredAuthSession() {
   try {
-    return window.localStorage.getItem(AUTH_SESSION_HINT_KEY) === 'true'
+    const storedValue = window.localStorage.getItem(AUTH_SESSION_HINT_KEY)
+    if (!storedValue) return { isActive: false, accessToken: '' }
+    if (storedValue === 'true') return { isActive: true, accessToken: '' }
+
+    const parsed = JSON.parse(storedValue)
+    if (parsed && typeof parsed === 'object') {
+      const accessToken = typeof parsed.accessToken === 'string' ? parsed.accessToken : ''
+      return {
+        isActive: Boolean(parsed.isActive || accessToken),
+        accessToken,
+      }
+    }
   } catch {
-    return false
+    // Local storage can be unavailable in strict browser modes.
   }
+
+  return { isActive: false, accessToken: '' }
 }
 
-function setStoredAuthSessionHint(value) {
+function hasStoredAuthSessionHint() {
+  return readStoredAuthSession().isActive
+}
+
+function setStoredAuthSessionHint(value, nextAccessToken = '') {
   try {
-    if (value) {
-      window.localStorage.setItem(AUTH_SESSION_HINT_KEY, 'true')
-    } else {
-      window.localStorage.removeItem(AUTH_SESSION_HINT_KEY)
+    if (value && nextAccessToken) {
+      window.localStorage.setItem(AUTH_SESSION_HINT_KEY, JSON.stringify({
+        isActive: true,
+        accessToken: nextAccessToken,
+      }))
+      return
     }
+
+    if (value) {
+      window.localStorage.setItem(AUTH_SESSION_HINT_KEY, JSON.stringify({
+        isActive: true,
+        accessToken: '',
+      }))
+      return
+    }
+
+    window.localStorage.removeItem(AUTH_SESSION_HINT_KEY)
   } catch {
     // Local storage can be unavailable in strict browser modes.
   }
@@ -64,12 +93,17 @@ export function AuthProvider({ children }) {
     if (USE_MOCK_DATA) return ''
     if (refreshPromiseRef.current) return refreshPromiseRef.current
 
+    const storedSession = readStoredAuthSession()
+    if (storedSession.accessToken) {
+      setAccessToken(storedSession.accessToken)
+    }
+
     const refreshPromise = (async () => {
       try {
         const data = await refreshAccessToken()
         const nextToken = data?.accessToken || ''
         setAccessToken(nextToken)
-        setStoredAuthSessionHint(Boolean(nextToken))
+        setStoredAuthSessionHint(Boolean(nextToken), nextToken)
 
         if (nextToken) {
           const currentUser = await getCurrentUser(nextToken)
@@ -137,7 +171,7 @@ export function AuthProvider({ children }) {
       const data = await registerCustomer(payload)
       setUser(data?.user || null)
       setAccessToken(data?.accessToken || '')
-      setStoredAuthSessionHint(Boolean(data?.accessToken))
+      setStoredAuthSessionHint(Boolean(data?.accessToken), data?.accessToken || '')
       setAuthError('')
       showToast('Account created successfully', 'success')
       return data
@@ -156,7 +190,7 @@ export function AuthProvider({ children }) {
       const data = await loginCustomer(payload)
       setUser(data?.user || null)
       setAccessToken(data?.accessToken || '')
-      setStoredAuthSessionHint(Boolean(data?.accessToken))
+      setStoredAuthSessionHint(Boolean(data?.accessToken), data?.accessToken || '')
       setAuthError('')
       showToast('Login successful', 'success')
       return data
