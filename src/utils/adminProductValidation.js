@@ -123,10 +123,11 @@ export function validateProductForm(values) {
     const stock = Number(variant.stock)
     if (!Number.isInteger(stock) || stock < 0) addError(errors, `${prefix}.stock`, 'Stock cannot be negative.')
 
-    const sku = variant.sku.trim().toUpperCase()
-    if (!sku) addError(errors, `${prefix}.sku`, 'Enter a product code.')
-    else if (seenSkus.has(sku)) addError(errors, `${prefix}.sku`, 'Each pack size needs a unique SKU.')
-    else seenSkus.add(sku)
+    const sku = String(variant.sku || '').trim().toUpperCase()
+    if (sku) {
+      if (seenSkus.has(sku)) addError(errors, `${prefix}.sku`, 'Each pack size needs a unique SKU.')
+      else seenSkus.add(sku)
+    }
   })
 
   return errors
