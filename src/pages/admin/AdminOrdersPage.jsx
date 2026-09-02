@@ -9,7 +9,7 @@ import { useCart } from '../../context/CartContext'
 import { getAdminOrders, updateAdminOrderStatus } from '../../services/adminOrderService'
 import { formatCurrency } from '../../utils/currency'
 
-const orderStatuses = ['pending', 'confirmed', 'fulfilled', 'cancelled']
+const orderStatuses = ['pending', 'confirmed', 'dispatched', 'fulfilled', 'cancelled']
 
 function formatDate(value) {
   if (!value) return 'Not available'
@@ -24,6 +24,7 @@ function badgeClass(status) {
   if (status === 'paid' || status === 'fulfilled') return 'bg-green-100 text-green-800'
   if (status === 'failed' || status === 'cancelled') return 'bg-red-100 text-red-800'
   if (status === 'confirmed') return 'bg-blue-100 text-blue-800'
+  if (status === 'dispatched') return 'bg-violet-100 text-violet-800'
   return 'bg-amber-100 text-amber-800'
 }
 
@@ -35,6 +36,7 @@ function Address({ address }) {
 function AdminOrderCard({ order, savingId, onStatusChange }) {
   const [isOpen, setIsOpen] = useState(false)
   const shortId = order.id?.slice(-8).toUpperCase()
+  const canDispatch = order.paymentStatus === 'paid' && order.orderStatus === 'confirmed'
 
   return (
     <article className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -57,6 +59,19 @@ function AdminOrderCard({ order, savingId, onStatusChange }) {
           <p className="mt-1 text-xs font-bold text-brand">{isOpen ? 'Hide details' : 'View details'}</p>
         </div>
       </button>
+
+      {canDispatch && (
+        <div className="flex justify-end border-t border-gray-100 bg-amber-50 px-5 py-3">
+          <button
+            type="button"
+            disabled={savingId === order.id}
+            onClick={() => onStatusChange(order.id, 'dispatched')}
+            className="min-h-10 rounded-lg bg-brand px-4 text-sm font-bold text-white hover:bg-brand-dark disabled:cursor-not-allowed disabled:bg-gray-400"
+          >
+            Dispatch order
+          </button>
+        </div>
+      )}
 
       {isOpen && (
         <div className="border-t border-gray-200 bg-gray-50 p-5">
@@ -164,9 +179,13 @@ function AdminOrdersPage() {
     <div>
       <AdminPageHeader title="Orders" description="View customer orders, delivery details, payments and fulfilment status." />
       <div className="mb-5 flex flex-wrap items-end gap-3 rounded-xl border border-gray-200 bg-white p-4">
+        <button type="button" className={`min-h-11 rounded-lg px-4 text-sm font-bold ${status === 'pending-dispatch' ? 'bg-brand text-white' : 'bg-brand-light text-brand'}`} onClick={() => { setStatus('pending-dispatch'); setPage(1) }}>
+          Pending dispatch
+        </button>
         <label className="grid gap-1 text-xs font-bold text-gray-600">Order status
           <select value={status} className="min-h-11 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-gray-900" onChange={(event) => { setStatus(event.target.value); setPage(1) }}>
             <option value="">All orders</option>
+            <option value="pending-dispatch">Pending dispatch</option>
             {orderStatuses.map((item) => <option key={item} value={item}>{titleCase(item)}</option>)}
           </select>
         </label>
