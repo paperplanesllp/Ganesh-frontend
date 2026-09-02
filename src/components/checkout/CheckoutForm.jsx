@@ -279,9 +279,6 @@ function CheckoutForm({ onDeliveryStateChange }) {
         </label>
       </div>
 
-      <div className="mt-6 rounded-xl border border-gray-200 p-4 text-sm font-semibold text-gray-900">
-        Payment method: PhonePe
-      </div>
 
       {paymentError && (
         <div className="mt-6 rounded-xl border border-brand/30 bg-white p-4 text-sm font-semibold text-brand">
