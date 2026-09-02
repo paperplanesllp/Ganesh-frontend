@@ -44,8 +44,10 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(!USE_MOCK_DATA)
   const [authError, setAuthError] = useState('')
   const { showToast } = useCart()
+  const showToastRef = useRef(showToast)
   const refreshPromiseRef = useRef(null)
   const authFailureHandledRef = useRef(false)
+  showToastRef.current = showToast
 
   const clearAuthError = useCallback(() => setAuthError(''), [])
   const updateCurrentUser = useCallback((nextUser) => {
@@ -89,7 +91,7 @@ export function AuthProvider({ children }) {
               ? 'Your session has expired. Please log in again.'
               : getSafeAuthErrorMessage(error, 'Please log in again.')
             setAuthError(message)
-            showToast(message, 'error')
+            showToastRef.current(message, 'error')
           }
         }
 
@@ -103,7 +105,7 @@ export function AuthProvider({ children }) {
     } finally {
       if (refreshPromiseRef.current === refreshPromise) refreshPromiseRef.current = null
     }
-  }, [showToast])
+  }, [])
 
   useEffect(() => {
     if (USE_MOCK_DATA) return undefined
