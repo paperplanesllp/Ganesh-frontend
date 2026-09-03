@@ -52,7 +52,7 @@ function HeroSection() {
             <div className="relative flex w-fit rounded-full bg-black text-white shadow-lg shadow-black/10">
               <Link
                 to="/products?category=Pickles"
-                className="group inline-flex items-center justify-center gap-2 rounded-l-full px-6 py-3 font-semibold transition-all duration-300 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
+                className="group inline-flex items-center justify-center gap-2 rounded-l-full px-6 py-3 font-semibold transition-all duration-300 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 md:rounded-full"
               >
                 Shop Pickles
 
@@ -77,7 +77,7 @@ function HeroSection() {
                 aria-haspopup="menu"
                 aria-label="Choose a product category"
                 onClick={() => setIsShopMenuOpen((isOpen) => !isOpen)}
-                className="rounded-r-full border-l border-white/25 px-3 transition-colors hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
+                className="rounded-r-full border-l border-white/25 px-3 transition-colors hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 md:hidden"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -93,9 +93,9 @@ function HeroSection() {
               {isShopMenuOpen && (
                 <div
                   role="menu"
-                  className="absolute left-0 top-[calc(100%+0.5rem)] z-20 min-w-44 overflow-hidden rounded-2xl border border-white/15 bg-black/95 p-1 text-sm shadow-2xl backdrop-blur-sm"
+                  className="absolute left-0 top-[calc(100%+0.5rem)] z-20 min-w-44 overflow-hidden rounded-2xl border border-white/15 bg-black/95 p-1 text-sm shadow-2xl backdrop-blur-sm md:hidden"
                 >
-                  {['Pickles', 'Vathals', 'Powders'].map((category) => (
+                  {['Vathals', 'Powders'].map((category) => (
                     <Link
                       key={category}
                       to={`/products?category=${category}`}
