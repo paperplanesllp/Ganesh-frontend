@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function HeroSection() {
+  const [isShopMenuOpen, setIsShopMenuOpen] = useState(false)
+
   return (
     <section className="relative h-screen min-h-screen w-full max-w-full overflow-hidden bg-[#4b090c]">
       {/* The muted hero video loops continuously. */}
@@ -46,27 +49,66 @@ function HeroSection() {
           <div
             className="mt-6 flex flex-col gap-3 min-[380px]:flex-row sm:mt-8 sm:flex-wrap"
           >
-            <Link
-              to="/products"
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-black px-6 py-3 font-semibold text-white shadow-lg shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
-            >
-              Shop Pickles
-
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                stroke="currentColor"
-                strokeWidth="2"
-                aria-hidden="true"
+            <div className="relative flex w-fit rounded-full bg-black text-white shadow-lg shadow-black/10">
+              <Link
+                to="/products?category=Pickles"
+                className="group inline-flex items-center justify-center gap-2 rounded-l-full px-6 py-3 font-semibold transition-all duration-300 hover:-translate-y-1 hover:bg-brand-dark hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
               >
-                <path
-                  d="M5 12h14m-6-6 6 6-6 6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Link>
+                Shop Pickles
+
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M5 12h14m-6-6 6 6-6 6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </Link>
+              <button
+                type="button"
+                aria-expanded={isShopMenuOpen}
+                aria-haspopup="menu"
+                aria-label="Choose a product category"
+                onClick={() => setIsShopMenuOpen((isOpen) => !isOpen)}
+                className="rounded-r-full border-l border-white/25 px-3 transition-colors hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className={`h-4 w-4 transition-transform duration-200 ${isShopMenuOpen ? 'rotate-180' : ''}`}
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              {isShopMenuOpen && (
+                <div
+                  role="menu"
+                  className="absolute left-0 top-[calc(100%+0.5rem)] z-20 min-w-44 overflow-hidden rounded-2xl border border-white/15 bg-black/95 p-1 text-sm shadow-2xl backdrop-blur-sm"
+                >
+                  {['Pickles', 'Vathals', 'Powders'].map((category) => (
+                    <Link
+                      key={category}
+                      to={`/products?category=${category}`}
+                      role="menuitem"
+                      onClick={() => setIsShopMenuOpen(false)}
+                      className="block rounded-xl px-4 py-3 font-semibold text-white transition-colors hover:bg-brand-dark focus:bg-brand-dark focus:outline-none"
+                    >
+                      {category}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <Link
               to="/about"
