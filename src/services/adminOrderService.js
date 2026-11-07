@@ -30,3 +30,10 @@ export function updateAdminOrderStatus(orderId, status, auth = {}) {
     body: { status },
   }, auth)
 }
+
+export function resendAdminOrderEmails(orderId, target = 'missing', auth = {}) {
+  return authenticatedApiRequest(`/admin/orders/${encodeURIComponent(orderId)}/resend-emails`, {
+    method: 'POST',
+    body: { target },
+  }, auth)
+}

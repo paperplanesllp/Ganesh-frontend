@@ -6,7 +6,7 @@ import AdminPageHeader from '../../components/admin/AdminPageHeader'
 import AdminPagination from '../../components/admin/AdminPagination'
 import { useAuth } from '../../context/AuthContext'
 import { useCart } from '../../context/CartContext'
-import { getAdminOrders, updateAdminOrderStatus } from '../../services/adminOrderService'
+import { getAdminOrders, resendAdminOrderEmails, updateAdminOrderStatus } from '../../services/adminOrderService'
 import { formatCurrency } from '../../utils/currency'
 
 const orderStatuses = ['pending', 'confirmed', 'dispatched', 'fulfilled', 'cancelled']
@@ -33,7 +33,51 @@ function Address({ address }) {
   return <p className="mt-2 text-sm leading-6 text-gray-700">{lines.join(', ') || 'Address not available'}</p>
 }
 
-function AdminOrderCard({ order, savingId, onStatusChange }) {
+function EmailStatusLine({ label, sentAt, isQueued }) {
+  if (sentAt) return <div><dt className="text-gray-500">{label}</dt><dd className="font-medium text-green-700">Sent {formatDate(sentAt)}</dd></div>
+  return <div><dt className="text-gray-500">{label}</dt><dd className={`font-medium ${isQueued ? 'text-amber-700' : 'text-gray-700'}`}>{isQueued ? 'Not sent yet' : 'Not sent'}</dd></div>
+}
+
+function OrderEmailStatus({ order, isSending, onResend }) {
+  const notifications = order.notifications || {}
+  const isQueued = Boolean(notifications.queuedAt)
+  const allSent = Boolean(notifications.customerEmailSentAt && notifications.storeEmailSentAt)
+  const [target, setTarget] = useState('missing')
+
+  if (order.paymentStatus !== 'paid') return null
+
+  return (
+    <section className="mt-5 rounded-xl border border-gray-200 bg-white p-4">
+      <h3 className="font-bold text-gray-900">Order emails</h3>
+      <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+        <EmailStatusLine label="Customer confirmation" sentAt={notifications.customerEmailSentAt} isQueued={isQueued} />
+        <EmailStatusLine label="Store notification" sentAt={notifications.storeEmailSentAt} isQueued={isQueued} />
+      </dl>
+      {!isQueued && !allSent && <p className="mt-3 text-xs text-gray-500">This order was paid before order emails were enabled.</p>}
+      {notifications.lastError && !allSent && <p className="mt-3 rounded-lg bg-red-50 p-3 text-sm text-red-700"><strong>Last error:</strong> {notifications.lastError}</p>}
+      <div className="mt-4 flex flex-wrap items-end gap-3">
+        <label className="grid gap-1 text-xs font-bold text-gray-600">Send
+          <select value={target} disabled={isSending} className="min-h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm font-medium text-gray-900" onChange={(event) => setTarget(event.target.value)}>
+            <option value="missing">Only emails not sent yet</option>
+            <option value="customer">Customer confirmation again</option>
+            <option value="store">Store notification again</option>
+            <option value="both">Both again</option>
+          </select>
+        </label>
+        <button
+          type="button"
+          disabled={isSending || (target === 'missing' && allSent)}
+          onClick={() => onResend(order.id, target)}
+          className="min-h-10 rounded-lg border border-brand px-4 text-sm font-bold text-brand hover:bg-brand-light disabled:cursor-not-allowed disabled:border-gray-300 disabled:text-gray-400"
+        >
+          {isSending ? 'Sending…' : 'Resend emails'}
+        </button>
+      </div>
+    </section>
+  )
+}
+
+function AdminOrderCard({ order, savingId, emailSendingId, onStatusChange, onResendEmails }) {
   const [isOpen, setIsOpen] = useState(false)
   const shortId = order.id?.slice(-8).toUpperCase()
   const canDispatch = order.paymentStatus === 'paid' && order.orderStatus === 'confirmed'
@@ -119,6 +163,8 @@ function AdminOrderCard({ order, savingId, onStatusChange }) {
             </div>
           </section>
 
+          <OrderEmailStatus order={order} isSending={emailSendingId === order.id} onResend={onResendEmails} />
+
           <section className="mt-5 flex flex-wrap items-end gap-3 rounded-xl border border-gray-200 bg-white p-4">
             <label className="grid gap-2 text-sm font-bold text-gray-900">
               Update order status
@@ -145,6 +191,7 @@ function AdminOrdersPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [savingId, setSavingId] = useState('')
+  const [emailSendingId, setEmailSendingId] = useState('')
 
   const loadOrders = useCallback(async () => {
     setIsLoading(true)
@@ -175,6 +222,19 @@ function AdminOrdersPage() {
     }
   }
 
+  const resendEmails = async (orderId, target) => {
+    setEmailSendingId(orderId)
+    try {
+      const data = await resendAdminOrderEmails(orderId, target, auth)
+      if (data.order) setOrders((current) => current.map((order) => order.id === orderId ? data.order : order))
+      showToast(data.emailsSent ? 'Order emails sent' : (data.message || 'Emails could not be sent.'), data.emailsSent ? 'success' : 'error')
+    } catch (requestError) {
+      showToast(requestError?.message || 'Emails could not be sent.', 'error')
+    } finally {
+      setEmailSendingId('')
+    }
+  }
+
   return (
     <div>
       <AdminPageHeader title="Orders" description="View customer orders, delivery details, payments and fulfilment status." />
@@ -194,7 +254,7 @@ function AdminOrdersPage() {
       {isLoading && <AdminLoadingState message="Loading orders..." />}
       {!isLoading && error && <AdminErrorState message={error} onRetry={loadOrders} />}
       {!isLoading && !error && orders.length === 0 && <AdminEmptyState title="No orders yet" message="New customer orders will automatically appear here after checkout." />}
-      {!isLoading && !error && orders.length > 0 && <div className="grid gap-4">{orders.map((order) => <AdminOrderCard key={order.id} order={order} savingId={savingId} onStatusChange={changeStatus} />)}<AdminPagination pagination={pagination} onPageChange={setPage} itemLabel="orders" /></div>}
+      {!isLoading && !error && orders.length > 0 && <div className="grid gap-4">{orders.map((order) => <AdminOrderCard key={order.id} order={order} savingId={savingId} emailSendingId={emailSendingId} onStatusChange={changeStatus} onResendEmails={resendEmails} />)}<AdminPagination pagination={pagination} onPageChange={setPage} itemLabel="orders" /></div>}
     </div>
   )
 }
